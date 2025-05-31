@@ -299,56 +299,57 @@
       }, 3000);
     }
 
+    // 手動設定T-shirt圖片清單（因為GitHub Pages無法讀取資料夾）
+    const tshirtFiles = [
+      'white.png', 
+      'grey.png',
+      // 請根據你實際上傳的檔案名稱修改這個清單
+    ];
+
     // 載入T-shirt選項
     async function loadTshirtOptions() {
       const select = document.getElementById('tshirt-color');
+      let hasValidImages = false;
       
-      try {
-        // 嘗試載入tshirts資料夾內容
-        const response = await fetch('./tshirts/');
-        if (response.ok) {
-          const text = await response.text();
-          const imageFiles = text.match(/href="[^"]*\.(png|jpg|jpeg)"/gi);
+      // 嘗試載入預設的T-shirt圖片
+      for (const filename of tshirtFiles) {
+        try {
+          const imgPath = `./tshirts/${filename}`;
+          const response = await fetch(imgPath, { method: 'HEAD' });
           
-          if (imageFiles && imageFiles.length > 0) {
-            const files = imageFiles.map(match => {
-              const filename = match.match(/href="([^"]*)"/)[1];
-              return {
-                name: filename.replace(/\.(png|jpg|jpeg)$/i, ''),
-                file: filename
-              };
-            });
-            
-            files.forEach(item => {
-              const option = document.createElement('option');
-              option.value = `./tshirts/${item.file}`;
-              option.textContent = item.name;
-              select.appendChild(option);
-            });
-            
-            // 載入第一個T-shirt
-            if (files.length > 0) {
-              select.value = `./tshirts/${files[0].file}`;
-              loadTshirtImage(`./tshirts/${files[0].file}`);
-            }
-            return;
+          if (response.ok) {
+            const option = document.createElement('option');
+            option.value = imgPath;
+            option.textContent = filename.replace(/\.(png|jpg|jpeg)$/i, '').replace(/[-_]/g, ' ');
+            select.appendChild(option);
+            hasValidImages = true;
           }
+        } catch (error) {
+          console.log(`無法載入 ${filename}`);
         }
-      } catch (error) {
-        console.log('無法載入tshirts資料夾，使用預設顏色');
       }
       
-      // 使用預設顏色
-      defaultTshirts.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.color;
-        option.textContent = item.name;
-        select.appendChild(option);
-      });
-      
-      // 設定預設顏色
-      select.value = defaultTshirts[0].color;
-      drawTshirtShape(defaultTshirts[0].color);
+      // 如果沒有找到任何圖片，使用預設顏色
+      if (!hasValidImages) {
+        console.log('沒有找到T-shirt圖片，使用預設顏色');
+        defaultTshirts.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.color;
+          option.textContent = item.name;
+          select.appendChild(option);
+        });
+        
+        // 設定預設顏色
+        select.value = defaultTshirts[0].color;
+        drawTshirtShape(defaultTshirts[0].color);
+      } else {
+        // 載入第一個可用的T-shirt圖片
+        const firstOption = select.options[1]; // 跳過"請選擇顏色..."
+        if (firstOption) {
+          select.value = firstOption.value;
+          loadTshirtImage(firstOption.value);
+        }
+      }
     }
 
     // 載入T-shirt圖片
