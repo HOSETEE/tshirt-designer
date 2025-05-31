@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -5,209 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>本機試衣間｜T-Shirt合圖工具</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 30px;
-      text-align: center;
-    }
-    
-    .header h1 {
-      margin: 0;
-      font-size: 2.5em;
-      font-weight: 300;
-    }
-    
-    .header p {
-      margin: 10px 0 0 0;
-      opacity: 0.9;
-      font-size: 1.1em;
-    }
-    
-    .controls {
-      padding: 30px;
-      background: #f8f9fa;
-      border-bottom: 1px solid #e9ecef;
-    }
-    
-    .control-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    label {
-      font-weight: 600;
-      color: #495057;
-      font-size: 0.9em;
-    }
-    
-    select, input[type="file"] {
-      padding: 12px 15px;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    select:focus, input[type="file"]:focus {
-      border-color: #667eea;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    
-    .file-input-wrapper {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-    }
-    
-    .file-input-wrapper input[type=file] {
-      position: absolute;
-      left: -9999px;
-    }
-    
-    .file-input-label {
-      padding: 12px 20px;
-      background: #28a745;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-block;
-      font-weight: 500;
-    }
-    
-    .file-input-label:hover {
-      background: #218838;
-      transform: translateY(-2px);
-    }
-    
-    .export-btn {
-      padding: 12px 25px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    .export-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-    }
-    
-    .export-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .canvas-container {
-      padding: 30px;
-      text-align: center;
-      background: white;
-    }
-    
-    canvas {
-      border: 3px solid #e9ecef;
-      border-radius: 10px;
-      display: block;
-      margin: 0 auto;
-      max-width: 100%;
-      background: #f8f9fa;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      cursor: grab;
-    }
-    
-    canvas:active {
-      cursor: grabbing;
-    }
-    
-    .hint {
-      color: #6c757d;
-      font-size: 14px;
-      margin-top: 15px;
-      padding: 15px;
-      background: #e7f3ff;
-      border-radius: 8px;
-      border-left: 4px solid #667eea;
-    }
-    
-    .hint strong {
-      color: #495057;
-    }
-    
-    .status {
-      padding: 10px 15px;
-      border-radius: 6px;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
-    }
-    
-    .status.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    
-    .status.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-      
-      .header h1 {
-        font-size: 2em;
-      }
-      
-      .controls, .canvas-container {
-        padding: 20px;
-      }
-      
-      .control-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+    .header h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+    .header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em; }
+    .controls { padding: 30px; background: #f8f9fa; border-bottom: 1px solid #e9ecef; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-bottom: 20px; }
+    .control-group { display: flex; flex-direction: column; gap: 8px; min-width: 150px; }
+    label { font-weight: 600; color: #495057; font-size: 0.9em; }
+    select, input[type="file"] { padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px; transition: all 0.3s ease; }
+    select:focus, input[type="file"]:focus { border-color: #667eea; outline: none; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; }
+    .file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
+    .file-input-label { padding: 12px 20px; background: #28a745; color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: inline-block; font-weight: 500; }
+    .file-input-label:hover { background: #218838; transform: translateY(-2px); }
+    .export-btn { padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .export-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); }
+    .export-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .canvas-container { padding: 30px; text-align: center; background: white; }
+    canvas { border: 3px solid #e9ecef; border-radius: 10px; display: block; margin: 0 auto; max-width: 100%; background: #f8f9fa; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: grab; }
+    canvas:active { cursor: grabbing; }
+    .hint { color: #6c757d; font-size: 14px; margin-top: 15px; padding: 15px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #667eea; }
+    .hint strong { color: #495057; }
+    .status { padding: 10px 15px; border-radius: 6px; margin-top: 10px; font-size: 14px; display: none; }
+    .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    @media (max-width: 768px) { body { padding: 10px; } .header h1 { font-size: 2em; } .controls, .canvas-container { padding: 20px; } .control-row { flex-direction: column; align-items: stretch; } .control-group { min-width: 0; } }
   </style>
 </head>
 <body>
@@ -216,7 +42,6 @@
       <h1>🎨 T-Shirt 設計工具</h1>
       <p>選擇T-Shirt顏色，上傳設計圖，輕鬆製作校稿預覽</p>
     </div>
-    
     <div class="controls">
       <div class="control-row">
         <div class="control-group">
@@ -225,43 +50,47 @@
             <option value="">請選擇顏色...</option>
           </select>
         </div>
-        
         <div class="control-group">
           <label>上傳設計圖</label>
           <div class="file-input-wrapper">
             <input type="file" id="upload-art" accept="image/*" />
-            <label for="upload-art" class="file-input-label">
-              📁 選擇圖片檔案
-            </label>
+            <label for="upload-art" class="file-input-label"> 📁 選擇圖片檔案 </label>
           </div>
         </div>
-        
+        <div class="control-group" style="min-width:180px;">
+          <label style="color:#495057;">設計圖尺寸</label>
+          <div id="art-size-info" style="color:#667eea; font-weight:600; font-size:16px; min-height:24px;">&nbsp;</div>
+        </div>
         <div class="control-group">
           <label>&nbsp;</label>
-          <button id="export-jpg" class="export-btn" disabled>
-            💾 匯出 JPG 校稿圖
-          </button>
+          <button id="export-jpg" class="export-btn" disabled> 💾 匯出 JPG 校稿圖 </button>
         </div>
       </div>
-      
       <div id="status" class="status"></div>
     </div>
-    
     <div class="canvas-container">
       <canvas id="preview-canvas" width="1400" height="1200"></canvas>
-      <div class="hint">
-        💡 <strong>操作提示：</strong>上傳設計圖後，可以<strong>拖曳</strong>調整位置，使用<strong>滾輪</strong>縮放大小
-      </div>
+      <div class="hint">💡 <strong>操作提示：</strong>上傳設計圖後，可以<strong>拖曳</strong>調整位置，使用<strong>滾輪</strong>縮放大小</div>
     </div>
   </div>
-
   <script>
     const canvas = document.getElementById('preview-canvas');
     const ctx = canvas.getContext('2d');
     const statusDiv = document.getElementById('status');
     const exportBtn = document.getElementById('export-jpg');
-
-    // 預設T-shirt顏色（如果沒有tshirts資料夾）
+    // 尺寸資訊更新函數
+    function updateArtSizeInfo() {
+      const infoDiv = document.getElementById('art-size-info');
+      if (!artLoaded) {
+        infoDiv.textContent = '';
+        return;
+      }
+      const pxToCm = 0.06;
+      const w = (artState.originalWidth * artState.scale * pxToCm).toFixed(1);
+      const h = (artState.originalHeight * artState.scale * pxToCm).toFixed(1);
+      infoDiv.textContent = `${w} cm × ${h} cm`;
+    }
+    // 預設T-shirt顏色
     const defaultTshirts = [
       { name: '白色', color: '#FFFFFF' },
       { name: '黑色', color: '#000000' },
@@ -270,13 +99,10 @@
       { name: '綠色', color: '#28A745' },
       { name: '灰色', color: '#6C757D' }
     ];
-
     const tshirtImg = new Image();
     const artImg = new Image();
     let artLoaded = false;
     let tshirtLoaded = false;
-
-    // 設計圖狀態
     let artState = {
       x: canvas.width / 2,
       y: canvas.height / 2 - 100,
@@ -288,35 +114,20 @@
       offsetX: 0,
       offsetY: 0
     };
-
-    // 顯示狀態訊息
     function showStatus(message, type = 'success') {
       statusDiv.textContent = message;
       statusDiv.className = `status ${type}`;
       statusDiv.style.display = 'block';
-      setTimeout(() => {
-        statusDiv.style.display = 'none';
-      }, 3000);
+      setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
     }
-
-    // 手動設定T-shirt圖片清單（因為GitHub Pages無法讀取資料夾）
-    const tshirtFiles = [
-      'white.png',
-      'grey.png',
-      // 請根據你實際上傳的檔案名稱修改這個清單
-    ];
-
-    // 載入T-shirt選項
+    const tshirtFiles = ['white.png', 'grey.png'];
     async function loadTshirtOptions() {
       const select = document.getElementById('tshirt-color');
       let hasValidImages = false;
-      
-      // 嘗試載入預設的T-shirt圖片
       for (const filename of tshirtFiles) {
         try {
           const imgPath = `./tshirts/${filename}`;
           const response = await fetch(imgPath, { method: 'HEAD' });
-          
           if (response.ok) {
             const option = document.createElement('option');
             option.value = imgPath;
@@ -324,55 +135,39 @@
             select.appendChild(option);
             hasValidImages = true;
           }
-        } catch (error) {
-          console.log(`無法載入 ${filename}`);
-        }
+        } catch (error) {}
       }
-      
-      // 如果沒有找到任何圖片，使用預設顏色
       if (!hasValidImages) {
-        console.log('沒有找到T-shirt圖片，使用預設顏色');
         defaultTshirts.forEach(item => {
           const option = document.createElement('option');
           option.value = item.color;
           option.textContent = item.name;
           select.appendChild(option);
         });
-        
-        // 設定預設顏色
         select.value = defaultTshirts[0].color;
         drawTshirtShape(defaultTshirts[0].color);
       } else {
-        // 載入第一個可用的T-shirt圖片
-        const firstOption = select.options[1]; // 跳過"請選擇顏色..."
+        const firstOption = select.options[1];
         if (firstOption) {
           select.value = firstOption.value;
           loadTshirtImage(firstOption.value);
         }
       }
     }
-
-    // 載入T-shirt圖片
     function loadTshirtImage(src) {
       tshirtImg.onload = function() {
         tshirtLoaded = true;
         drawCanvas();
         updateExportButton();
       };
-      tshirtImg.onerror = function() {
-        showStatus('T-shirt圖片載入失敗', 'error');
-      };
+      tshirtImg.onerror = function() { showStatus('T-shirt圖片載入失敗', 'error'); };
       tshirtImg.src = src;
     }
-
-    // 繪製T-shirt形狀（當沒有圖片檔案時）
     function drawTshirtShape(color) {
       tshirtLoaded = true;
       drawCanvas();
       updateExportButton();
     }
-
-    // T-shirt顏色選擇事件
     document.getElementById('tshirt-color').addEventListener('change', (e) => {
       const value = e.target.value;
       if (value.startsWith('./')) {
@@ -381,90 +176,55 @@
         drawTshirtShape(value);
       }
     });
-
-    // 上傳設計圖事件
     document.getElementById('upload-art').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
-        // 檢查檔案類型
         if (!file.type.startsWith('image/')) {
           showStatus('請選擇有效的圖片檔案', 'error');
           return;
         }
-        
-        // 檢查檔案大小 (10MB)
         if (file.size > 10 * 1024 * 1024) {
           showStatus('圖片檔案過大，請選擇小於10MB的檔案', 'error');
           return;
         }
-        
         const reader = new FileReader();
         reader.onload = function(event) {
           artImg.onload = function() {
             artState.originalWidth = artImg.width;
             artState.originalHeight = artImg.height;
-            
-            // 計算適合的顯示大小
             const ratio = Math.min(
               artState.maxDisplaySize / artImg.width,
               artState.maxDisplaySize / artImg.height,
               1
             );
             artState.scale = ratio;
-            
-            // 重置位置到中心
             artState.x = canvas.width / 2;
             artState.y = canvas.height / 2 - 100;
-            
             artLoaded = true;
             drawCanvas();
             updateExportButton();
             showStatus('設計圖上傳成功！');
-            
-            // 更新按鈕文字
             document.querySelector('.file-input-label').textContent = `✅ ${file.name}`;
+            updateArtSizeInfo();
           };
-          
-          artImg.onerror = function() {
-            showStatus('圖片載入失敗，請嘗試其他檔案', 'error');
-          };
-          
+          artImg.onerror = function() { showStatus('圖片載入失敗，請嘗試其他檔案', 'error'); };
           artImg.src = event.target.result;
         };
-        
-        reader.onerror = function() {
-          showStatus('檔案讀取失敗', 'error');
-        };
-        
+        reader.onerror = function() { showStatus('檔案讀取失敗', 'error'); };
         reader.readAsDataURL(file);
       }
     });
-
-    // 更新匯出按鈕狀態
-    function updateExportButton() {
-      exportBtn.disabled = !tshirtLoaded;
-    }
-
-    // 繪製畫布
+    function updateExportButton() { exportBtn.disabled = !tshirtLoaded; }
     function drawCanvas() {
-      // 清除畫布
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // 繪製T-shirt
       if (tshirtLoaded) {
         if (tshirtImg.src && tshirtImg.complete) {
-          // 直接以原始尺寸繪製T-shirt（1400x1200完美匹配畫布）
           ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
         } else {
-          // 繪製T-shirt形狀（調整比例適應1400x1200）
           const color = document.getElementById('tshirt-color').value;
-          
-          // T-shirt輪廓
           ctx.fillStyle = color;
           ctx.beginPath();
-          
-          // 調整T-shirt形狀比例以適應1400x1200
-          const centerX = canvas.width / 2;  // 700
+          const centerX = canvas.width / 2;
           const topY = 100;
           const bodyWidth = 500;
           const bodyHeight = 700;
@@ -472,31 +232,19 @@
           const neckHeight = 100;
           const sleeveWidth = 200;
           const sleeveHeight = 250;
-          
-          // 主體
           ctx.rect(centerX - bodyWidth/2, topY + neckHeight, bodyWidth, bodyHeight);
-          
-          // 領口
           ctx.rect(centerX - neckWidth/2, topY, neckWidth, neckHeight);
-          
-          // 袖子
           ctx.rect(centerX - bodyWidth/2 - sleeveWidth, topY + 40, sleeveWidth, sleeveHeight);
           ctx.rect(centerX + bodyWidth/2, topY + 40, sleeveWidth, sleeveHeight);
-          
           ctx.fill();
-          
-          // 邊框
           ctx.strokeStyle = '#ddd';
           ctx.lineWidth = 3;
           ctx.stroke();
         }
       }
-      
-      // 繪製設計圖
       if (artLoaded && artImg.complete) {
         const displayWidth = artState.originalWidth * artState.scale;
         const displayHeight = artState.originalHeight * artState.scale;
-        
         ctx.drawImage(
           artImg,
           artState.x - displayWidth / 2,
@@ -505,22 +253,16 @@
           displayHeight
         );
       }
+      updateArtSizeInfo();
     }
-
-    // 滑鼠事件處理
     let isDragging = false;
-    
     canvas.addEventListener('mousedown', (e) => {
       if (!artLoaded) return;
-      
       const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      
       const displayWidth = artState.originalWidth * artState.scale;
       const displayHeight = artState.originalHeight * artState.scale;
-      
-      // 檢查是否點擊在設計圖上
       if (
         mouseX >= artState.x - displayWidth / 2 &&
         mouseX <= artState.x + displayWidth / 2 &&
@@ -533,53 +275,39 @@
         canvas.style.cursor = 'grabbing';
       }
     });
-    
     canvas.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
-      
       const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      
       artState.x = mouseX - artState.offsetX;
       artState.y = mouseY - artState.offsetY;
-      
       drawCanvas();
     });
-    
     canvas.addEventListener('mouseup', () => {
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
-    
     canvas.addEventListener('mouseleave', () => {
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
-
-    // 滾輪縮放
     canvas.addEventListener('wheel', (e) => {
       if (!artLoaded) return;
-      
       e.preventDefault();
-      
       const scaleFactor = e.deltaY < 0 ? 1.1 : 0.9;
       const newScale = artState.scale * scaleFactor;
-      
-      // 限制縮放範圍
       if (newScale >= 0.1 && newScale <= 5) {
         artState.scale = newScale;
         drawCanvas();
+        updateArtSizeInfo();
       }
     });
-
-    // 匯出JPG
     document.getElementById('export-jpg').addEventListener('click', () => {
       if (!tshirtLoaded) {
         showStatus('請先選擇T-shirt顏色', 'error');
         return;
       }
-      
       try {
         const link = document.createElement('a');
         link.download = `tshirt_preview_${new Date().getTime()}.jpg`;
@@ -587,14 +315,11 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
         showStatus('校稿圖已成功匯出！');
       } catch (error) {
         showStatus('匯出失敗，請重試', 'error');
       }
     });
-
-    // 初始化
     window.addEventListener('load', () => {
       loadTshirtOptions();
       drawCanvas();
