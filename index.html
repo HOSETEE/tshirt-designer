@@ -301,7 +301,7 @@
 
     // 手動設定T-shirt圖片清單（因為GitHub Pages無法讀取資料夾）
     const tshirtFiles = [
-      'white.png', 
+      'white.png',
       'grey.png',
       // 請根據你實際上傳的檔案名稱修改這個清單
     ];
@@ -453,8 +453,28 @@
       // 繪製T-shirt
       if (tshirtLoaded) {
         if (tshirtImg.src && tshirtImg.complete) {
-          // 繪製T-shirt圖片
-          ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
+          // 計算T-shirt圖片的適合尺寸（保持比例）
+          const imgAspect = tshirtImg.width / tshirtImg.height;
+          const canvasAspect = canvas.width / canvas.height;
+          
+          let drawWidth, drawHeight, drawX, drawY;
+          
+          if (imgAspect > canvasAspect) {
+            // 圖片較寬，以畫布寬度為準
+            drawWidth = canvas.width;
+            drawHeight = canvas.width / imgAspect;
+            drawX = 0;
+            drawY = (canvas.height - drawHeight) / 2;
+          } else {
+            // 圖片較高，以畫布高度為準
+            drawHeight = canvas.height;
+            drawWidth = canvas.height * imgAspect;
+            drawX = (canvas.width - drawWidth) / 2;
+            drawY = 0;
+          }
+          
+          // 繪製T-shirt圖片（保持比例）
+          ctx.drawImage(tshirtImg, drawX, drawY, drawWidth, drawHeight);
         } else {
           // 繪製T-shirt形狀
           const color = document.getElementById('tshirt-color').value;
