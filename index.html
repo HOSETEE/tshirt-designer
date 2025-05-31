@@ -248,7 +248,7 @@
     </div>
     
     <div class="canvas-container">
-      <canvas id="preview-canvas" width="800" height="1000"></canvas>
+      <canvas id="preview-canvas" width="1400" height="1200"></canvas>
       <div class="hint">
         💡 <strong>操作提示：</strong>上傳設計圖後，可以<strong>拖曳</strong>調整位置，使用<strong>滾輪</strong>縮放大小
       </div>
@@ -453,45 +453,25 @@
       // 繪製T-shirt
       if (tshirtLoaded) {
         if (tshirtImg.src && tshirtImg.complete) {
-          // 計算T-shirt圖片的適合尺寸（保持比例）
-          const imgAspect = tshirtImg.width / tshirtImg.height;
-          const canvasAspect = canvas.width / canvas.height;
-          
-          let drawWidth, drawHeight, drawX, drawY;
-          
-          if (imgAspect > canvasAspect) {
-            // 圖片較寬，以畫布寬度為準
-            drawWidth = canvas.width;
-            drawHeight = canvas.width / imgAspect;
-            drawX = 0;
-            drawY = (canvas.height - drawHeight) / 2;
-          } else {
-            // 圖片較高，以畫布高度為準
-            drawHeight = canvas.height;
-            drawWidth = canvas.height * imgAspect;
-            drawX = (canvas.width - drawWidth) / 2;
-            drawY = 0;
-          }
-          
-          // 繪製T-shirt圖片（保持比例）
-          ctx.drawImage(tshirtImg, drawX, drawY, drawWidth, drawHeight);
+          // 直接以原始尺寸繪製T-shirt（1400x1200完美匹配畫布）
+          ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
         } else {
-          // 繪製T-shirt形狀
+          // 繪製T-shirt形狀（調整比例適應1400x1200）
           const color = document.getElementById('tshirt-color').value;
           
           // T-shirt輪廓
           ctx.fillStyle = color;
           ctx.beginPath();
           
-          // 簡單的T-shirt形狀
-          const centerX = canvas.width / 2;
-          const topY = 50;
-          const bodyWidth = 300;
-          const bodyHeight = 400;
-          const neckWidth = 80;
-          const neckHeight = 60;
-          const sleeveWidth = 120;
-          const sleeveHeight = 150;
+          // 調整T-shirt形狀比例以適應1400x1200
+          const centerX = canvas.width / 2;  // 700
+          const topY = 100;
+          const bodyWidth = 500;
+          const bodyHeight = 700;
+          const neckWidth = 140;
+          const neckHeight = 100;
+          const sleeveWidth = 200;
+          const sleeveHeight = 250;
           
           // 主體
           ctx.rect(centerX - bodyWidth/2, topY + neckHeight, bodyWidth, bodyHeight);
@@ -500,14 +480,14 @@
           ctx.rect(centerX - neckWidth/2, topY, neckWidth, neckHeight);
           
           // 袖子
-          ctx.rect(centerX - bodyWidth/2 - sleeveWidth, topY + 20, sleeveWidth, sleeveHeight);
-          ctx.rect(centerX + bodyWidth/2, topY + 20, sleeveWidth, sleeveHeight);
+          ctx.rect(centerX - bodyWidth/2 - sleeveWidth, topY + 40, sleeveWidth, sleeveHeight);
+          ctx.rect(centerX + bodyWidth/2, topY + 40, sleeveWidth, sleeveHeight);
           
           ctx.fill();
           
           // 邊框
           ctx.strokeStyle = '#ddd';
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 3;
           ctx.stroke();
         }
       }
