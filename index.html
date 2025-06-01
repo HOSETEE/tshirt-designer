@@ -11,28 +11,42 @@
     .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
     .header h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
     .header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em; }
+
     .controls { padding: 30px; background: #f8f9fa; border-bottom: 1px solid #e9ecef; }
-    .control-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-bottom: 20px; }
-    .control-group { display: flex; flex-direction: column; gap: 8px; min-width: 150px; }
-    label { font-weight: 600; color: #495057; font-size: 0.9em; }
-    select, input[type="file"] { padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px; transition: all 0.3s ease; }
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+    .control-group { display: flex; flex-direction: column; gap: 8px; min-width: 150px; margin-bottom: 0; }
+    label { font-weight: 600; color: #495057; font-size: 0.95em; margin-bottom: 4px; }
+    select, input[type="file"] { padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; }
     select:focus, input[type="file"]:focus { border-color: #667eea; outline: none; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
     .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; }
     .file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
-    .file-input-label { padding: 12px 20px; background: #28a745; color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: inline-block; font-weight: 500; }
+    .file-input-label { padding: 12px 34px; background: #28a745; color: white; border-radius: 14px; cursor: pointer; transition: all 0.3s ease; display: inline-block; font-weight: 600; font-size: 18px; }
     .file-input-label:hover { background: #218838; transform: translateY(-2px); }
-    .export-btn { padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .export-btn { padding: 12px 34px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 14px; cursor: pointer; font-weight: 700; font-size: 18px; transition: all 0.3s ease; }
     .export-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); }
     .export-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .canvas-container { padding: 30px; text-align: center; background: white; }
     canvas { border: 3px solid #e9ecef; border-radius: 10px; display: block; margin: 0 auto; max-width: 100%; background: #f8f9fa; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: grab; }
     canvas:active { cursor: grabbing; }
-    .hint { color: #6c757d; font-size: 14px; margin-top: 15px; padding: 15px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #667eea; }
+    .hint { color: #6c757d; font-size: 15px; margin-top: 15px; padding: 15px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #667eea; }
     .hint strong { color: #495057; }
-    .status { padding: 10px 15px; border-radius: 6px; margin-top: 10px; font-size: 14px; display: none; }
+    .status { padding: 10px 15px; border-radius: 6px; margin-top: 10px; font-size: 15px; display: none; }
     .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
     .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    @media (max-width: 768px) { body { padding: 10px; } .header h1 { font-size: 2em; } .controls, .canvas-container { padding: 20px; } .control-row { flex-direction: column; align-items: stretch; } .control-group { min-width: 0; } }
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      .header h1 { font-size: 2em; }
+      .controls, .canvas-container { padding: 20px; }
+      .control-row { flex-direction: column; align-items: stretch; gap: 18px; }
+      .control-group { min-width: 0; }
+      .file-input-label, .export-btn { font-size: 16px; padding: 11px 15px; }
+    }
   </style>
 </head>
 <body>
@@ -55,9 +69,6 @@
             <input type="file" id="upload-art" accept="image/*" />
             <label for="upload-art" class="file-input-label"> 📁 選擇圖片檔案 </label>
           </div>
-        </div>
-        <div class="control-group" style="min-width:180px;">
-          <label style="color:#495057;">（尺寸資訊請見下方 canvas 左下角）</label>
         </div>
         <div class="control-group">
           <label>&nbsp;</label>
@@ -246,18 +257,15 @@
           displayWidth,
           displayHeight
         );
-        // -- 直接畫上尺寸 --
+        // -- 直接畫上尺寸(左上角) --
         const w = roundCM(artState.originalWidth * artState.scale * pxToCm);
         const h = roundCM(artState.originalHeight * artState.scale * pxToCm);
         const label = `${w} cm × ${h} cm`;
         ctx.save();
-        ctx.font = "bold 24px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        ctx.strokeStyle = "#e6ffe3";
-        ctx.lineWidth = 7;
-        ctx.fillStyle = "#226a3c";
-        const x = 30, y = canvas.height - 36;
-        ctx.strokeText(label, x, y);
-        ctx.fillText(label, x, y);
+        ctx.font = "bold 16px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.fillStyle = "#111";
+        ctx.textBaseline = "top";
+        ctx.fillText(label, 32, 42);
         ctx.restore();
       }
     }
