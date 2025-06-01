@@ -279,8 +279,8 @@
           displayHeight
         );
         // -- 直接畫上尺寸(左上角) --
-        const w = roundCM(artState.originalWidth * artState.scale * pxToCm * 1.1);
-        const h = roundCM(artState.originalHeight * artState.scale * pxToCm * 1.1);
+        const w = roundCM(artState.originalWidth * artState.scale * pxToCm);
+        const h = roundCM(artState.originalHeight * artState.scale * pxToCm);
         const label = `${w} cm × ${h} cm`;
         ctx.save();
         ctx.font = "bold 24px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
