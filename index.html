@@ -263,7 +263,7 @@
         const label = `${w} cm × ${h} cm`;
         ctx.save();
         ctx.font = "bold 24px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        ctx.fillStyle = "#111";
+        ctx.fillStyle = "#fff";
         ctx.textBaseline = "top";
         ctx.fillText(label, 32, 42);
         ctx.restore();
@@ -347,80 +347,6 @@
       loadTshirtOptions();
       drawCanvas();
     });
-    // ---- 手機觸控支援 ----
-let lastTouchDist = null;
-
-canvas.addEventListener('touchstart', function(e) {
-  if (!artLoaded) return;
-  if (e.touches.length === 1) {
-    // 單指拖曳
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches[0];
-    const mouseX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    const mouseY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    const displayWidth = artState.originalWidth * artState.scale;
-    const displayHeight = artState.originalHeight * artState.scale;
-    if (
-      mouseX >= artState.x - displayWidth / 2 &&
-      mouseX <= artState.x + displayWidth / 2 &&
-      mouseY >= artState.y - displayHeight / 2 &&
-      mouseY <= artState.y + displayHeight / 2
-    ) {
-      isDragging = true;
-      artState.offsetX = mouseX - artState.x;
-      artState.offsetY = mouseY - artState.y;
-      canvas.style.cursor = 'grabbing';
-    }
-  }
-  // 雙指縮放
-  if (e.touches.length === 2) {
-    isDragging = false;
-    lastTouchDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-  }
-});
-
-canvas.addEventListener('touchmove', function(e) {
-  if (!artLoaded) return;
-  e.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-
-  if (e.touches.length === 1 && isDragging) {
-    // 單指拖曳
-    const touch = e.touches[0];
-    const mouseX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    const mouseY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    artState.x = mouseX - artState.offsetX;
-    artState.y = mouseY - artState.offsetY;
-    drawCanvas();
-  }
-  if (e.touches.length === 2) {
-    // 雙指縮放
-    const newDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    if (lastTouchDist !== null) {
-      const scaleChange = newDist / lastTouchDist;
-      let { w, h } = getCurrentCmSize();
-      let avgCm = (w + h) / 2 * scaleChange;
-      avgCm = Math.round(avgCm);
-      if (avgCm < 5) avgCm = 5;
-      let targetScaleW = avgCm / (artState.originalWidth * pxToCm);
-      let targetScaleH = avgCm / (artState.originalHeight * pxToCm);
-      artState.scale = Math.min(targetScaleW, targetScaleH);
-      drawCanvas();
-    }
-    lastTouchDist = newDist;
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchend', function(e) {
-  isDragging = false;
-  lastTouchDist = null;
-  canvas.style.cursor = 'grab';
 });
   </script>
 </body>
