@@ -398,7 +398,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>HOSETEE 客製化設計工具</h1>
+      <h1>🎨 HOSETEE 客製化設計工具</h1>
       <p>選擇T-Shirt顏色，上傳設計圖，輕鬆製作校稿預覽</p>
     </div>
     
@@ -534,26 +534,26 @@
         }
       }
       
-      // 如果沒有找到圖片檔案，使用預設顏色
-      if (!hasValidImages) {
-        defaultTshirts.forEach(item => {
-          const option = document.createElement('option');
-          option.value = item.color;
-          option.textContent = item.name;
-          select.appendChild(option);
-        });
-        // 預設選擇第一個顏色
-        if (select.options.length > 1) {
-          select.value = defaultTshirts[0].color;
-          drawTshirtShape(defaultTshirts[0].color);
+      // 總是添加預設顏色選項（作為備用）
+      defaultTshirts.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.color;
+        option.textContent = item.name;
+        select.appendChild(option);
+      });
+      
+      // 選擇預設選項
+      if (hasValidImages && select.options.length > 1) {
+        // 如果有圖片檔案，選擇第一個圖片
+        const firstImageOption = Array.from(select.options).find(opt => opt.value.startsWith('./'));
+        if (firstImageOption) {
+          select.value = firstImageOption.value;
+          loadTshirtImage(firstImageOption.value);
         }
       } else {
-        // 如果找到圖片檔案，預設選擇第一個
-        const firstOption = select.options[1];
-        if (firstOption) {
-          select.value = firstOption.value;
-          loadTshirtImage(firstOption.value);
-        }
+        // 沒有圖片檔案，使用預設顏色
+        select.value = defaultTshirts[0].color;
+        drawTshirtShape(defaultTshirts[0].color);
       }
     }
     
@@ -570,6 +570,7 @@
     }
     
     function drawTshirtShape(color) {
+      console.log('繪製T-shirt形狀，顏色:', color);
       tshirtLoaded = true;
       drawCanvas();
       updateExportButton();
@@ -646,10 +647,14 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       if (tshirtLoaded) {
-        if (tshirtImg.src && tshirtImg.complete) {
+        if (tshirtImg.src && tshirtImg.complete && tshirtImg.src.includes('./tshirts/')) {
+          // 如果是圖片檔案且已載入完成
           ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
         } else {
-          const color = document.getElementById('tshirt-color').value;
+          // 繪製純色T-shirt形狀
+          const selectedValue = document.getElementById('tshirt-color').value;
+          const color = selectedValue || '#FFFFFF';
+          
           ctx.fillStyle = color;
           ctx.beginPath();
           const centerX = canvas.width / 2;
@@ -661,13 +666,18 @@
           const sleeveWidth = 200;
           const sleeveHeight = 250;
           
+          // 繪製T-shirt主體
           ctx.rect(centerX - bodyWidth/2, topY + neckHeight, bodyWidth, bodyHeight);
+          // 繪製領口
           ctx.rect(centerX - neckWidth/2, topY, neckWidth, neckHeight);
+          // 繪製左袖
           ctx.rect(centerX - bodyWidth/2 - sleeveWidth, topY + 40, sleeveWidth, sleeveHeight);
+          // 繪製右袖
           ctx.rect(centerX + bodyWidth/2, topY + 40, sleeveWidth, sleeveHeight);
           ctx.fill();
           
-          ctx.strokeStyle = '#ddd';
+          // 繪製邊框
+          ctx.strokeStyle = color === '#FFFFFF' ? '#ddd' : '#999';
           ctx.lineWidth = 3;
           ctx.stroke();
         }
