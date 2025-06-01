@@ -517,6 +517,7 @@
       const select = document.getElementById('tshirt-color');
       let hasValidImages = false;
       
+      // 先嘗試載入圖片檔案
       for (const filename of tshirtFiles) {
         try {
           const imgPath = `./tshirts/${filename}`;
@@ -528,9 +529,12 @@
             select.appendChild(option);
             hasValidImages = true;
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log(`無法載入 ${filename}`);
+        }
       }
       
+      // 如果沒有找到圖片檔案，使用預設顏色
       if (!hasValidImages) {
         defaultTshirts.forEach(item => {
           const option = document.createElement('option');
@@ -538,9 +542,13 @@
           option.textContent = item.name;
           select.appendChild(option);
         });
-        select.value = defaultTshirts[0].color;
-        drawTshirtShape(defaultTshirts[0].color);
+        // 預設選擇第一個顏色
+        if (select.options.length > 1) {
+          select.value = defaultTshirts[0].color;
+          drawTshirtShape(defaultTshirts[0].color);
+        }
       } else {
+        // 如果找到圖片檔案，預設選擇第一個
         const firstOption = select.options[1];
         if (firstOption) {
           select.value = firstOption.value;
@@ -569,9 +577,13 @@
     
     document.getElementById('tshirt-color').addEventListener('change', (e) => {
       const value = e.target.value;
+      if (!value) return; // 如果沒有選擇任何值就返回
+      
       if (value.startsWith('./')) {
+        // 這是圖片檔案路徑
         loadTshirtImage(value);
       } else {
+        // 這是顏色代碼
         drawTshirtShape(value);
       }
     });
@@ -772,3 +784,11 @@
         showStatus('校稿圖已成功匯出！');
       } catch (error) {
         showStatus('匯出失敗，請重試', 'error');
+      }
+    });
+    
+    // 初始化載入
+    window.addEventListener('load', () => {
+      loadTshirtOptions();
+      drawCanvas();
+    });
