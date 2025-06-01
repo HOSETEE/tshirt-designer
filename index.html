@@ -5,32 +5,183 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HOSETEE｜T-Shirt合圖工具</title>
   <style>
-    /* 這裡貼上完整的 CSS */
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; margin: 0; color: #333; }
-    .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); overflow: hidden; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }
-    .header h1 { font-size: 3em; font-weight: 700; margin-bottom: 10px; background: linear-gradient(45deg, #fff, #f0f8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .header p { font-size: 1.2em; opacity: 0.95; font-weight: 300; }
-    .main-content { display: grid; grid-template-columns: 400px 1fr; gap: 0; min-height: 700px; }
-    .controls-sidebar { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px 30px; border-right: 1px solid #e2e8f0; }
-    .controls-title { font-size: 1.4em; font-weight: 700; color: #1e293b; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-    .control-group { margin-bottom: 30px; }
-    label { display: block; font-weight: 600; color: #374151; font-size: 0.95em; margin-bottom: 12px; }
-    select { width: 100%; padding: 16px 20px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 16px; background: white; appearance: none; cursor: pointer; }
-    select:focus { border-color: #667eea; outline: none; box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1); }
-    .file-input-wrapper { position: relative; width: 100%; }
-    .file-input-wrapper input[type=file] { position: absolute; opacity: 0; pointer-events: none; }
-    .file-input-label { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 16px; }
-    .export-btn { width: 100%; padding: 18px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .export-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); }
-    .export-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .canvas-area { padding: 40px; display: flex; flex-direction: column; align-items: center; background: white; position: relative; }
-    canvas { border: 3px solid #e5e7eb; border-radius: 16px; background: #f8fafc; box-shadow: 0 20px 40px rgba(0,0,0,0.1); cursor: grab; max-width: 100%; height: auto; }
-    canvas:active { cursor: grabbing; }
-    .hint { margin-top: 25px; padding: 20px 25px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; border-left: 4px solid #3b82f6; color: #1e40af; font-size: 15px; max-width: 600px; }
-    .status { margin-top: 20px; padding: 16px 20px; border-radius: 12px; font-size: 15px; display: none; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .status.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; border: 1px solid #6ee7b7; }
-    .status.error { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #7f1d1d; border: 1px solid #f87171; }
+    /* ----------------- 完整 CSS，請整段貼回 ----------------- */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 3em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #fff, #f0f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header p {
+      font-size: 1.2em;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+    .main-content {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 0;
+      min-height: 700px;
+    }
+    .controls-sidebar {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      padding: 40px 30px;
+      border-right: 1px solid #e2e8f0;
+    }
+    .controls-title {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .control-group {
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.95em;
+      margin-bottom: 12px;
+    }
+    select {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 16px;
+      background: white;
+      appearance: none;
+      cursor: pointer;
+    }
+    select:focus {
+      border-color: #667eea;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    .file-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .export-btn {
+      width: 100%;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .export-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    .export-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .canvas-area {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      position: relative;
+    }
+    canvas {
+      border: 3px solid #e5e7eb;
+      border-radius: 16px;
+      background: #f8fafc;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      cursor: grab;
+      max-width: 100%;
+      height: auto;
+    }
+    canvas:active {
+      cursor: grabbing;
+    }
+    .hint {
+      margin-top: 25px;
+      padding: 20px 25px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+      color: #1e40af;
+      font-size: 15px;
+      max-width: 600px;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      display: none;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .status.success {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+    .status.error {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      color: #7f1d1d;
+      border: 1px solid #f87171;
+    }
+    /* --------------------------------------------------------- */
   </style>
 </head>
 <body>
@@ -53,14 +204,18 @@
           <div class="file-input-wrapper">
             <input type="file" id="upload-art" accept="image/*" />
             <label for="upload-art" class="file-input-label">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" /></svg>
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+              </svg>
               選擇圖片檔案
             </label>
           </div>
         </div>
         <div class="control-group">
           <button id="export-jpg" class="export-btn" disabled>
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+            </svg>
             匯出 JPG 校稿圖
           </button>
         </div>
@@ -76,13 +231,28 @@
   </div>
 
   <script>
+    // 取得 Canvas 與需要的 DOM 元素
     const canvas = document.getElementById('preview-canvas');
     const ctx = canvas.getContext('2d');
     const statusDiv = document.getElementById('status');
     const exportBtn = document.getElementById('export-jpg');
+
+    // 圖片尺寸計算用
     const pxToCm = 0.06;
     function roundCM(val) { return Math.round(val); }
-    let artState = { x: canvas.width / 2, y: canvas.height / 2 - 100, scale: 1, originalWidth: 0, originalHeight: 0, maxDisplaySize: 300, dragging: false, offsetX: 0, offsetY: 0 };
+
+    // 紀錄設計圖狀態
+    let artState = {
+      x: canvas.width / 2,
+      y: canvas.height / 2 - 100,
+      scale: 1,
+      originalWidth: 0,
+      originalHeight: 0,
+      maxDisplaySize: 300,
+      dragging: false,
+      offsetX: 0,
+      offsetY: 0
+    };
     function getCurrentCmSize() {
       if (!artLoaded) return { w: 0, h: 0 };
       let wcm = artState.originalWidth * artState.scale * pxToCm;
@@ -90,7 +260,7 @@
       return { w: wcm, h: hcm };
     }
 
-    // T-shirt 圖片檔名與名稱對應
+    // T-shirt 圖片檔名與名稱對應（請確保 ./tshirts/ 資料夾下有這些檔案）
     const tshirtNames = [
       '白色', '黑色', '石墨灰', '深卡其', '沙棕色',
       '薄荷綠', '淺粉紅', '經典藍', '燕麥色', '靛青色',
@@ -103,7 +273,7 @@
       '酒紅色.png', '深咖啡.png', '深藍色.png', '淺卡其.png', '麻灰色.png',
       '煙燻粉.png', '墨綠色.png', '濃可可.png', '黑巧克力.png', '鼠尾草綠.png'
     ];
-    // 純色備用
+    // 如果沒有上傳那麼多圖片，也會顯示「純色」選項在後面
     const defaultTshirts = [
       { name: '白色', color: '#FFFFFF' },
       { name: '黑色', color: '#000000' },
@@ -112,11 +282,13 @@
       { name: '綠色', color: '#28A745' },
       { name: '灰色', color: '#6C757D' }
     ];
+
     const tshirtImg = new Image();
     const artImg = new Image();
     let artLoaded = false;
     let tshirtLoaded = false;
 
+    // 顯示訊息（成功或錯誤）
     function showStatus(message, type = 'success') {
       statusDiv.textContent = message;
       statusDiv.className = `status ${type}`;
@@ -124,33 +296,34 @@
       setTimeout(() => { statusDiv.style.display = 'none'; }, 4000);
     }
 
-    // 載入 T-shirt 選單（不再檢查檔案是否存在）
+    // -------------- 取代原本的 loadTshirtOptions，直接列出所有選項 --------------
     async function loadTshirtOptions() {
       const select = document.getElementById('tshirt-color');
-      // 清除所有舊選項
+      // 先清空所有舊選項，只留第一行提示
       select.innerHTML = '<option value="">請選擇顏色...</option>';
 
-      // 1) 圖片檔名 → 名稱，加入下拉
+      // (1) 把所有圖片檔名轉成可選的 <option>
       for (let i = 0; i < tshirtFiles.length; i++) {
         const option = document.createElement('option');
-        option.value = `./tshirts/${tshirtFiles[i]}`;
-        option.textContent = tshirtNames[i];
+        option.value = `./tshirts/${tshirtFiles[i]}`;   // 檔案路徑
+        option.textContent = tshirtNames[i];            // 顯示名稱
         select.appendChild(option);
       }
 
-      // 2) 純色選項加在後面
+      // (2) 把純色選項加在圖片之後
       defaultTshirts.forEach(item => {
         const option = document.createElement('option');
-        option.value = item.color;
-        option.textContent = item.name;
+        option.value = item.color;     // value 就直接用純色 CSS 值
+        option.textContent = item.name; // 顯示純色名稱
         select.appendChild(option);
       });
 
-      // 3) 預設選第一個圖片顏色（第二行）
+      // (3) 預設選中第一個圖片（index=1，即下拉的第二行）
       select.selectedIndex = 1;
       loadTshirtImage(select.value);
     }
 
+    // 載入 T-shirt 圖片
     function loadTshirtImage(src) {
       tshirtImg.onload = function() {
         tshirtLoaded = true;
@@ -163,12 +336,14 @@
       tshirtImg.src = src;
     }
 
+    // 畫出純色 T-shirt
     function drawTshirtShape(color) {
       tshirtLoaded = true;
       drawCanvas();
       updateExportButton();
     }
 
+    // 監聽顏色下拉改變事件
     document.getElementById('tshirt-color').addEventListener('change', (e) => {
       const value = e.target.value;
       if (!value) return;
@@ -178,7 +353,9 @@
         drawTshirtShape(value);
       }
     });
+    // -------------------------------------------------------------------------------
 
+    // 監聽上傳設計圖
     document.getElementById('upload-art').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -220,17 +397,22 @@
       }
     });
 
+    // 更新「匯出按鈕」狀態
     function updateExportButton() {
       exportBtn.disabled = !tshirtLoaded;
     }
 
+    // 在 Canvas 上繪製 T-shirt + 設計圖
     function drawCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // (1) 畫 T-shirt 底圖（圖片或純色形狀）
       if (tshirtLoaded) {
         if (tshirtImg.src && tshirtImg.complete && tshirtImg.src.includes('./tshirts/')) {
+          // 圖片檔案已載入，直接 drawImage
           ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
         } else {
+          // 純色 T-shirt，繪製簡單幾何
           const selectedValue = document.getElementById('tshirt-color').value;
           const color = selectedValue || '#FFFFFF';
           ctx.fillStyle = color;
@@ -254,6 +436,7 @@
         }
       }
 
+      // (2) 畫上傳的設計圖
       if (artLoaded && artImg.complete) {
         const displayWidth = artState.originalWidth * artState.scale;
         const displayHeight = artState.originalHeight * artState.scale;
@@ -264,7 +447,7 @@
           displayWidth,
           displayHeight
         );
-        // 尺寸標示 *1.1
+        // (3) 在左上角顯示「實際尺寸 ×1.1」的文字
         const w = roundCM(artState.originalWidth * artState.scale * pxToCm * 1.1);
         const h = roundCM(artState.originalHeight * artState.scale * pxToCm * 1.1);
         const label = `${w} cm × ${h} cm`;
@@ -280,7 +463,7 @@
       }
     }
 
-    // 拖曳、縮放、匯出等功能保留原本邏輯
+    // 拖曳功能
     let isDragging = false;
     canvas.addEventListener('mousedown', (e) => {
       if (!artLoaded) return;
@@ -318,6 +501,8 @@
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
+
+    // 滾輪縮放
     canvas.addEventListener('wheel', (e) => {
       if (!artLoaded) return;
       e.preventDefault();
@@ -336,6 +521,7 @@
       drawCanvas();
     });
 
+    // 匯出 JPG
     document.getElementById('export-jpg').addEventListener('click', () => {
       if (!tshirtLoaded) {
         showStatus('請先選擇T-shirt顏色', 'error');
@@ -355,6 +541,7 @@
       }
     });
 
+    // 初始化：載入選單並畫一次畫布
     window.addEventListener('load', () => {
       loadTshirtOptions();
       drawCanvas();
