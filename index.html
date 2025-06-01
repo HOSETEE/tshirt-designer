@@ -57,18 +57,21 @@
     </div>
     <div class="controls">
       <div class="control-row">
-        <div class="control-group">
-          <label for="tshirt-color">T-Shirt 顏色</label>
-          <select id="tshirt-color">
-            <option value="">請選擇顏色...</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <label>上傳設計圖</label>
-          <div class="file-input-wrapper">
-            <input type="file" id="upload-art" accept="image/*" />
-            <label for="upload-art" class="file-input-label"> 📁 選擇圖片檔案 </label>
-          </div>
+  <div class="control-col">
+    <span class="control-label">T-Shirt 顏色</span>
+    <select id="tshirt-color">
+      <option value="">請選擇顏色...</option>
+    </select>
+  </div>
+  <div class="control-col">
+    <span class="control-label">上傳設計圖</span>
+    <div class="file-input-wrapper">
+      <input type="file" id="upload-art" accept="image/*" />
+      <label for="upload-art" class="file-input-label"> 📁 選擇圖片檔案 </label>
+    </div>
+  </div>
+  <button id="export-jpg" class="export-btn" disabled> 💾 匯出 JPG 校稿圖 </button>
+</div>
         </div>
         <div class="control-group">
           <label>&nbsp;</label>
@@ -347,6 +350,51 @@
       loadTshirtOptions();
       drawCanvas();
     });
+    .control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;  /* 水平置中 */
+}
+.control-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-group {
+  min-width: unset;
+  margin-bottom: 0;
+}
+
+.control-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 1.07em;
+  margin-right: 10px;
+  min-width: 90px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+select,
+.file-input-label,
+.export-btn {
+  height: 48px;   /* 統一高度 */
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  border-radius: 14px;
+}
+.file-input-label,
+.export-btn {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+select {
+  min-width: 140px;
+}
   </script>
 </body>
 </html>
