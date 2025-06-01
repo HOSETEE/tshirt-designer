@@ -514,50 +514,25 @@
     ];
     
     async function loadTshirtOptions() {
-  const select = document.getElementById('tshirt-color');
-  // 清掉原有選項，只留第一行提示
-  select.innerHTML = '<option value="">請選擇顏色...</option>';
-
-  // 1) 先把所有「圖片檔名 → 名稱」都加到下拉裡
-  const tshirtNames = [
-    '白色', '黑色', '石墨灰', '深卡其', '沙棕色',
-    '薄荷綠', '淺粉紅', '經典藍', '燕麥色', '靛青色',
-    '酒紅色', '深咖啡', '深藍色', '淺卡其', '麻灰色',
-    '煙燻粉', '墨綠色', '濃可可', '黑巧克力', '鼠尾草綠'
-  ];
-  const tshirtFiles = [
-    '白色.png', '黑色.png', '石墨灰.png', '深卡其.png', '沙棕色.png',
-    '薄荷綠.png', '淺粉紅.png', '經典藍.png', '燕麥色.png', '靛青色.png',
-    '酒紅色.png', '深咖啡.png', '深藍色.png', '淺卡其.png', '麻灰色.png',
-    '煙燻粉.png', '墨綠色.png', '濃可可.png', '黑巧克力.png', '鼠尾草綠.png'
-  ];
-  for (let i = 0; i < tshirtFiles.length; i++) {
-    const option = document.createElement('option');
-    option.value = `./tshirts/${tshirtFiles[i]}`;
-    option.textContent = tshirtNames[i];
-    select.appendChild(option);
-  }
-
-  // 2) 再把「純色」選項加在後面
-  const defaultTshirts = [
-    { name: '白色', color: '#FFFFFF' },
-    { name: '黑色', color: '#000000' },
-    { name: '紅色', color: '#DC3545' },
-    { name: '藍色', color: '#007BFF' },
-    { name: '綠色', color: '#28A745' },
-    { name: '灰色', color: '#6C757D' }
-  ];
-  defaultTshirts.forEach(item => {
-    const option = document.createElement('option');
-    option.value = item.color;
-    option.textContent = item.name;
-    select.appendChild(option);
-  });
-
-  // 3) 預設選中「第一個圖片」那一列
-  select.selectedIndex = 1;
-  loadTshirtImage(select.value);
-}
+      const select = document.getElementById('tshirt-color');
+      let hasValidImages = false;
+      
+      // 先嘗試載入圖片檔案
+      for (const filename of tshirtFiles) {
+        try {
+          const imgPath = `./tshirts/${filename}`;
+          const response = await fetch(imgPath, { method: 'HEAD' });
+          if (response.ok) {
+            const option = document.createElement('option');
+            option.value = imgPath;
+            option.textContent = filename.replace(/\.(png|jpg|jpeg)$/i, '').replace(/[-_]/g, ' ');
+            select.appendChild(option);
+            hasValidImages = true;
+          }
+        } catch (error) {
+          console.log(`無法載入 ${filename}`);
+        }
+      }
       
       // 總是添加預設顏色選項（作為備用）
       defaultTshirts.forEach(item => {
