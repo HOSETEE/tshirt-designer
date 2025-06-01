@@ -5,32 +5,394 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HOSETEE｜T-Shirt合圖工具</title>
   <style>
-    /* 這裡貼上完整的 CSS */
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; margin: 0; color: #333; }
-    .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); overflow: hidden; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }
-    .header h1 { font-size: 3em; font-weight: 700; margin-bottom: 10px; background: linear-gradient(45deg, #fff, #f0f8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .header p { font-size: 1.2em; opacity: 0.95; font-weight: 300; }
-    .main-content { display: grid; grid-template-columns: 400px 1fr; gap: 0; min-height: 700px; }
-    .controls-sidebar { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px 30px; border-right: 1px solid #e2e8f0; }
-    .controls-title { font-size: 1.4em; font-weight: 700; color: #1e293b; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-    .control-group { margin-bottom: 30px; }
-    label { display: block; font-weight: 600; color: #374151; font-size: 0.95em; margin-bottom: 12px; }
-    select { width: 100%; padding: 16px 20px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 16px; background: white; appearance: none; cursor: pointer; }
-    select:focus { border-color: #667eea; outline: none; box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1); }
-    .file-input-wrapper { position: relative; width: 100%; }
-    .file-input-wrapper input[type=file] { position: absolute; opacity: 0; pointer-events: none; }
-    .file-input-label { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 16px; }
-    .export-btn { width: 100%; padding: 18px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .export-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); }
-    .export-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .canvas-area { padding: 40px; display: flex; flex-direction: column; align-items: center; background: white; position: relative; }
-    canvas { border: 3px solid #e5e7eb; border-radius: 16px; background: #f8fafc; box-shadow: 0 20px 40px rgba(0,0,0,0.1); cursor: grab; max-width: 100%; height: auto; }
-    canvas:active { cursor: grabbing; }
-    .hint { margin-top: 25px; padding: 20px 25px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; border-left: 4px solid #3b82f6; color: #1e40af; font-size: 15px; max-width: 600px; }
-    .status { margin-top: 20px; padding: 16px 20px; border-radius: 12px; font-size: 15px; display: none; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .status.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; border: 1px solid #6ee7b7; }
-    .status.error { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #7f1d1d; border: 1px solid #f87171; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+    
+    .container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      background: white; 
+      border-radius: 20px; 
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white; 
+      padding: 40px 30px;
+      text-align: center; 
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+    }
+    
+    .header h1 { 
+      font-size: 3em; 
+      font-weight: 700; 
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #fff, #f0f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header p { 
+      font-size: 1.2em; 
+      opacity: 0.95;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 0;
+      min-height: 700px;
+    }
+
+    .controls-sidebar { 
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      padding: 40px 30px;
+      border-right: 1px solid #e2e8f0;
+    }
+    
+    .controls-title {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .control-group { 
+      margin-bottom: 30px;
+    }
+    
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    label { 
+      display: block;
+      font-weight: 600; 
+      color: #374151; 
+      font-size: 0.95em; 
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    select { 
+      width: 100%;
+      padding: 16px 20px; 
+      border: 2px solid #e5e7eb; 
+      border-radius: 12px; 
+      font-size: 16px; 
+      background: white;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 16px;
+      cursor: pointer;
+    }
+    
+    select:focus { 
+      border-color: #667eea; 
+      outline: none; 
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    .file-input-wrapper { 
+      position: relative; 
+      width: 100%;
+    }
+    
+    .file-input-wrapper input[type=file] { 
+      position: absolute; 
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .file-input-label { 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 20px; 
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 600; 
+      font-size: 16px;
+      border: none;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .file-input-label:hover { 
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+    
+    .file-input-label:active {
+      transform: translateY(0);
+    }
+    
+    .export-btn { 
+      width: 100%;
+      padding: 18px 20px; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white; 
+      border: none; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      font-weight: 700; 
+      font-size: 18px; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .export-btn:hover:not(:disabled) { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .export-btn:disabled { 
+      opacity: 0.5; 
+      cursor: not-allowed; 
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .canvas-area { 
+      padding: 40px; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      position: relative;
+    }
+    
+    .canvas-header {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    
+    .canvas-title {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+    
+    .canvas-subtitle {
+      color: #64748b;
+      font-size: 1em;
+    }
+    
+    canvas { 
+      border: 3px solid #e5e7eb; 
+      border-radius: 16px; 
+      background: #f8fafc; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      cursor: grab; 
+      transition: all 0.3s ease;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    canvas:active { 
+      cursor: grabbing; 
+    }
+    
+    canvas:hover {
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+    
+    .hint { 
+      margin-top: 25px;
+      padding: 20px 25px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+      color: #1e40af;
+      font-size: 15px;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+    }
+    
+    .hint strong { 
+      color: #1e3a8a; 
+      font-weight: 700;
+    }
+    
+    .status { 
+      margin-top: 20px;
+      padding: 16px 20px; 
+      border-radius: 12px; 
+      font-size: 15px; 
+      display: none;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .status.success { 
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46; 
+      border: 1px solid #6ee7b7;
+    }
+    
+    .status.error { 
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      color: #7f1d1d; 
+      border: 1px solid #f87171;
+    }
+
+    .size-display {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #1e293b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    @media (max-width: 1200px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .controls-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      
+      .control-group {
+        margin-bottom: 25px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body { 
+        padding: 10px; 
+      }
+      
+      .header {
+        padding: 30px 20px;
+      }
+      
+      .header h1 { 
+        font-size: 2.2em; 
+      }
+      
+      .header p {
+        font-size: 1.1em;
+      }
+      
+      .controls-sidebar, .canvas-area { 
+        padding: 25px 20px; 
+      }
+      
+      .controls-title,
+      .canvas-title {
+        font-size: 1.2em;
+      }
+      
+      .file-input-label, .export-btn { 
+        font-size: 16px; 
+        padding: 14px 18px; 
+      }
+      
+      .hint {
+        margin-top: 20px;
+        padding: 16px 20px;
+      }
+    }
+
+    /* 動畫效果 */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .control-group {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .control-group:nth-child(1) { animation-delay: 0.1s; }
+    .control-group:nth-child(2) { animation-delay: 0.2s; }
+    .control-group:nth-child(3) { animation-delay: 0.3s; }
+    .control-group:nth-child(4) { animation-delay: 0.4s; }
+
+    /* 載入動畫 */
+    .loading {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -39,35 +401,53 @@
       <h1>🎨 HOSETEE 客製化設計工具</h1>
       <p>選擇T-Shirt顏色，上傳設計圖，輕鬆製作校稿預覽</p>
     </div>
+    
     <div class="main-content">
       <aside class="controls-sidebar">
-        <h2 class="controls-title">⚙️ 設計控制台</h2>
+        <h2 class="controls-title">
+          ⚙️ 設計控制台
+        </h2>
+        
         <div class="control-group">
           <label for="tshirt-color">T-Shirt 顏色</label>
           <select id="tshirt-color">
             <option value="">請選擇顏色...</option>
           </select>
         </div>
+        
         <div class="control-group">
           <label>上傳設計圖</label>
           <div class="file-input-wrapper">
             <input type="file" id="upload-art" accept="image/*" />
             <label for="upload-art" class="file-input-label">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" /></svg>
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+              </svg>
               選擇圖片檔案
             </label>
           </div>
         </div>
+        
         <div class="control-group">
           <button id="export-jpg" class="export-btn" disabled>
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+            </svg>
             匯出 JPG 校稿圖
           </button>
         </div>
+        
         <div id="status" class="status"></div>
       </aside>
+      
       <main class="canvas-area">
+        <div class="canvas-header">
+          <h2 class="canvas-title">預覽畫布</h2>
+          <p class="canvas-subtitle">在這裡查看您的設計效果</p>
+        </div>
+        
         <canvas id="preview-canvas" width="1400" height="1200"></canvas>
+        
         <div class="hint">
           💡 <strong>操作提示：</strong>上傳設計圖後，可以<strong>拖曳</strong>調整位置，使用<strong>滾輪</strong>縮放大小
         </div>
@@ -80,30 +460,31 @@
     const ctx = canvas.getContext('2d');
     const statusDiv = document.getElementById('status');
     const exportBtn = document.getElementById('export-jpg');
+    
+    // 尺寸計算
     const pxToCm = 0.06;
     function roundCM(val) { return Math.round(val); }
-    let artState = { x: canvas.width / 2, y: canvas.height / 2 - 100, scale: 1, originalWidth: 0, originalHeight: 0, maxDisplaySize: 300, dragging: false, offsetX: 0, offsetY: 0 };
+    
+    let artState = {
+      x: canvas.width / 2,
+      y: canvas.height / 2 - 100,
+      scale: 1,
+      originalWidth: 0,
+      originalHeight: 0,
+      maxDisplaySize: 300,
+      dragging: false,
+      offsetX: 0,
+      offsetY: 0
+    };
+    
     function getCurrentCmSize() {
       if (!artLoaded) return { w: 0, h: 0 };
       let wcm = artState.originalWidth * artState.scale * pxToCm;
       let hcm = artState.originalHeight * artState.scale * pxToCm;
       return { w: wcm, h: hcm };
     }
-
-    // T-shirt 圖片檔名與名稱對應
-    const tshirtNames = [
-      '白色', '黑色', '石墨灰', '深卡其', '沙棕色',
-      '薄荷綠', '淺粉紅', '經典藍', '燕麥色', '靛青色',
-      '酒紅色', '深咖啡', '深藍色', '淺卡其', '麻灰色',
-      '煙燻粉', '墨綠色', '濃可可', '黑巧克力', '鼠尾草綠'
-    ];
-    const tshirtFiles = [
-      '白色.png', '黑色.png', '石墨灰.png', '深卡其.png', '沙棕色.png',
-      '薄荷綠.png', '淺粉紅.png', '經典藍.png', '燕麥色.png', '靛青色.png',
-      '酒紅色.png', '深咖啡.png', '深藍色.png', '淺卡其.png', '麻灰色.png',
-      '煙燻粉.png', '墨綠色.png', '濃可可.png', '黑巧克力.png', '鼠尾草綠.png'
-    ];
-    // 純色備用
+    
+    // 預設T-shirt顏色
     const defaultTshirts = [
       { name: '白色', color: '#FFFFFF' },
       { name: '黑色', color: '#000000' },
@@ -112,73 +493,102 @@
       { name: '綠色', color: '#28A745' },
       { name: '灰色', color: '#6C757D' }
     ];
+    
     const tshirtImg = new Image();
     const artImg = new Image();
     let artLoaded = false;
     let tshirtLoaded = false;
-
+    
     function showStatus(message, type = 'success') {
       statusDiv.textContent = message;
       statusDiv.className = `status ${type}`;
       statusDiv.style.display = 'block';
       setTimeout(() => { statusDiv.style.display = 'none'; }, 4000);
     }
-
-    // 載入 T-shirt 選單（不再檢查檔案是否存在）
+    
+    const tshirtFiles = [
+      '白色.png', '黑色.png', '石墨灰.png', '深卡其.png', '沙棕色.png',
+      '薄荷綠.png', '淺粉紅.png', '經典藍.png', '燕麥色.png', '靛青色.png',
+      '酒紅色.png', '深咖啡.png', '深藍色.png', '淺卡其.png', '麻灰色.png',
+      '煙燻粉.png', '墨綠色.png', '濃可可.png', '黑巧克力.png', '鼠尾草綠.png'
+    ];
+    
     async function loadTshirtOptions() {
       const select = document.getElementById('tshirt-color');
-      // 清除所有舊選項
-      select.innerHTML = '<option value="">請選擇顏色...</option>';
-
-      // 1) 圖片檔名 → 名稱，加入下拉
-      for (let i = 0; i < tshirtFiles.length; i++) {
-        const option = document.createElement('option');
-        option.value = `./tshirts/${tshirtFiles[i]}`;
-        option.textContent = tshirtNames[i];
-        select.appendChild(option);
+      let hasValidImages = false;
+      
+      // 先嘗試載入圖片檔案
+      for (const filename of tshirtFiles) {
+        try {
+          const imgPath = `./tshirts/${filename}`;
+          const response = await fetch(imgPath, { method: 'HEAD' });
+          if (response.ok) {
+            const option = document.createElement('option');
+            option.value = imgPath;
+            option.textContent = filename.replace(/\.(png|jpg|jpeg)$/i, '').replace(/[-_]/g, ' ');
+            select.appendChild(option);
+            hasValidImages = true;
+          }
+        } catch (error) {
+          console.log(`無法載入 ${filename}`);
+        }
       }
-
-      // 2) 純色選項加在後面
+      
+      // 總是添加預設顏色選項（作為備用）
       defaultTshirts.forEach(item => {
         const option = document.createElement('option');
         option.value = item.color;
         option.textContent = item.name;
         select.appendChild(option);
       });
-
-      // 3) 預設選第一個圖片顏色（第二行）
-      select.selectedIndex = 1;
-      loadTshirtImage(select.value);
+      
+      // 選擇預設選項
+      if (hasValidImages && select.options.length > 1) {
+        // 如果有圖片檔案，選擇第一個圖片
+        const firstImageOption = Array.from(select.options).find(opt => opt.value.startsWith('./'));
+        if (firstImageOption) {
+          select.value = firstImageOption.value;
+          loadTshirtImage(firstImageOption.value);
+        }
+      } else {
+        // 沒有圖片檔案，使用預設顏色
+        select.value = defaultTshirts[0].color;
+        drawTshirtShape(defaultTshirts[0].color);
+      }
     }
-
+    
     function loadTshirtImage(src) {
       tshirtImg.onload = function() {
         tshirtLoaded = true;
         drawCanvas();
         updateExportButton();
       };
-      tshirtImg.onerror = function() {
-        showStatus('T-shirt 圖片載入失敗', 'error');
+      tshirtImg.onerror = function() { 
+        showStatus('T-shirt圖片載入失敗', 'error'); 
       };
       tshirtImg.src = src;
     }
-
+    
     function drawTshirtShape(color) {
+      console.log('繪製T-shirt形狀，顏色:', color);
       tshirtLoaded = true;
       drawCanvas();
       updateExportButton();
     }
-
+    
     document.getElementById('tshirt-color').addEventListener('change', (e) => {
       const value = e.target.value;
-      if (!value) return;
-      if (value.includes('.png') || value.includes('.jpg') || value.includes('.jpeg')) {
+      if (!value) return; // 如果沒有選擇任何值就返回
+      
+      if (value.startsWith('./')) {
+        // 這是圖片檔案路徑
         loadTshirtImage(value);
       } else {
+        // 這是顏色代碼
         drawTshirtShape(value);
       }
     });
-
+    
     document.getElementById('upload-art').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -190,6 +600,7 @@
           showStatus('圖片檔案過大，請選擇小於10MB的檔案', 'error');
           return;
         }
+        
         const reader = new FileReader();
         reader.onload = function(event) {
           artImg.onload = function() {
@@ -207,32 +618,43 @@
             drawCanvas();
             updateExportButton();
             showStatus('設計圖上傳成功！');
+            
+            const label = document.querySelector('.file-input-label');
+            label.innerHTML = `
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
+              </svg>
+              ${file.name}
+            `;
           };
-          artImg.onerror = function() {
-            showStatus('圖片載入失敗，請嘗試其他檔案', 'error');
+          artImg.onerror = function() { 
+            showStatus('圖片載入失敗，請嘗試其他檔案', 'error'); 
           };
           artImg.src = event.target.result;
         };
-        reader.onerror = function() {
-          showStatus('檔案讀取失敗', 'error');
+        reader.onerror = function() { 
+          showStatus('檔案讀取失敗', 'error'); 
         };
         reader.readAsDataURL(file);
       }
     });
-
-    function updateExportButton() {
-      exportBtn.disabled = !tshirtLoaded;
+    
+    function updateExportButton() { 
+      exportBtn.disabled = !tshirtLoaded; 
     }
-
+    
     function drawCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+      
       if (tshirtLoaded) {
         if (tshirtImg.src && tshirtImg.complete && tshirtImg.src.includes('./tshirts/')) {
+          // 如果是圖片檔案且已載入完成
           ctx.drawImage(tshirtImg, 0, 0, canvas.width, canvas.height);
         } else {
+          // 繪製純色T-shirt形狀
           const selectedValue = document.getElementById('tshirt-color').value;
           const color = selectedValue || '#FFFFFF';
+          
           ctx.fillStyle = color;
           ctx.beginPath();
           const centerX = canvas.width / 2;
@@ -243,20 +665,28 @@
           const neckHeight = 100;
           const sleeveWidth = 200;
           const sleeveHeight = 250;
+          
+          // 繪製T-shirt主體
           ctx.rect(centerX - bodyWidth/2, topY + neckHeight, bodyWidth, bodyHeight);
+          // 繪製領口
           ctx.rect(centerX - neckWidth/2, topY, neckWidth, neckHeight);
+          // 繪製左袖
           ctx.rect(centerX - bodyWidth/2 - sleeveWidth, topY + 40, sleeveWidth, sleeveHeight);
+          // 繪製右袖
           ctx.rect(centerX + bodyWidth/2, topY + 40, sleeveWidth, sleeveHeight);
           ctx.fill();
+          
+          // 繪製邊框
           ctx.strokeStyle = color === '#FFFFFF' ? '#ddd' : '#999';
           ctx.lineWidth = 3;
           ctx.stroke();
         }
       }
-
+      
       if (artLoaded && artImg.complete) {
         const displayWidth = artState.originalWidth * artState.scale;
         const displayHeight = artState.originalHeight * artState.scale;
+        
         ctx.drawImage(
           artImg,
           artState.x - displayWidth / 2,
@@ -264,10 +694,12 @@
           displayWidth,
           displayHeight
         );
-        // 尺寸標示 *1.1
+        
+        // 尺寸標示
         const w = roundCM(artState.originalWidth * artState.scale * pxToCm * 1.1);
         const h = roundCM(artState.originalHeight * artState.scale * pxToCm * 1.1);
         const label = `${w} cm × ${h} cm`;
+        
         ctx.save();
         ctx.font = "bold 28px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillStyle = "#c9a063";
@@ -279,9 +711,10 @@
         ctx.restore();
       }
     }
-
-    // 拖曳、縮放、匯出等功能保留原本邏輯
+    
+    // 拖曳功能
     let isDragging = false;
+    
     canvas.addEventListener('mousedown', (e) => {
       if (!artLoaded) return;
       const rect = canvas.getBoundingClientRect();
@@ -289,6 +722,7 @@
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
       const displayWidth = artState.originalWidth * artState.scale;
       const displayHeight = artState.originalHeight * artState.scale;
+      
       if (
         mouseX >= artState.x - displayWidth / 2 &&
         mouseX <= artState.x + displayWidth / 2 &&
@@ -301,6 +735,7 @@
         canvas.style.cursor = 'grabbing';
       }
     });
+    
     canvas.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       const rect = canvas.getBoundingClientRect();
@@ -310,14 +745,18 @@
       artState.y = mouseY - artState.offsetY;
       drawCanvas();
     });
+    
     canvas.addEventListener('mouseup', () => {
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
+    
     canvas.addEventListener('mouseleave', () => {
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
+    
+    // 滾輪縮放
     canvas.addEventListener('wheel', (e) => {
       if (!artLoaded) return;
       e.preventDefault();
@@ -327,20 +766,23 @@
       let newH = roundCM(h) + delta;
       if (newW < 5) newW = 5;
       if (newH < 5) newH = 5;
+      
       let targetScaleW = newW / (artState.originalWidth * pxToCm);
       let targetScaleH = newH / (artState.originalHeight * pxToCm);
       let targetScale = Math.min(targetScaleW, targetScaleH);
       let minScale = Math.max(5 / (artState.originalWidth * pxToCm), 5 / (artState.originalHeight * pxToCm));
       if (targetScale < minScale) targetScale = minScale;
+      
       artState.scale = targetScale;
       drawCanvas();
     });
-
+    
     document.getElementById('export-jpg').addEventListener('click', () => {
       if (!tshirtLoaded) {
         showStatus('請先選擇T-shirt顏色', 'error');
         return;
       }
+      
       try {
         drawCanvas();
         const link = document.createElement('a');
@@ -354,11 +796,9 @@
         showStatus('匯出失敗，請重試', 'error');
       }
     });
-
+    
+    // 初始化載入
     window.addEventListener('load', () => {
       loadTshirtOptions();
       drawCanvas();
     });
-  </script>
-</body>
-</html>
