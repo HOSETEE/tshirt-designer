@@ -5,335 +5,289 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HOSETEE｜T-Shirt合圖工具</title>
   <style>
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
+      min-height: 100vh; padding: 20px; color: #333; 
     }
     .container { 
-      max-width: 1400px; 
-      margin: 0 auto; 
-      background: white; 
-      border-radius: 20px; 
-      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-      overflow: hidden;
-      backdrop-filter: blur(10px);
+      max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; 
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15); overflow: hidden; backdrop-filter: blur(10px);
     }
     .header { 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      color: white; 
-      padding: 40px 30px;
-      text-align: center; 
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; 
+      padding: 40px 30px; text-align: center; position: relative; overflow: hidden; 
     }
-    .header::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+    .header::before { 
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1.2" fill="white" opacity="0.13"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
       pointer-events: none;
     }
     .header h1 { 
-      font-size: 3em; 
-      font-weight: 700; 
-      margin-bottom: 10px;
+      font-size: 3em; font-weight: 700; margin-bottom: 10px; 
       background: linear-gradient(45deg, #fff, #f0f8ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      position: relative;
-      z-index: 1;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+      background-clip: text; position: relative; z-index: 1;
     }
     .header p { 
-      font-size: 1.2em; 
-      opacity: 0.95;
-      font-weight: 300;
-      position: relative;
-      z-index: 1;
+      font-size: 1.2em; opacity: 0.95; font-weight: 300; position: relative; z-index: 1;
     }
-    .main-content {
-      display: grid;
-      grid-template-columns: 400px 1fr;
-      gap: 0;
-      min-height: 700px;
-    }
+    .main-content { display: grid; grid-template-columns: 420px 1fr; gap: 0; min-height: 700px;}
     .controls-sidebar { 
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-      padding: 40px 30px;
-      border-right: 1px solid #e2e8f0;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); 
+      padding: 40px 30px; border-right: 1px solid #e2e8f0;
     }
-    .controls-title {
-      font-size: 1.4em;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 30px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .controls-title { 
+      font-size: 1.5em; font-weight: 700; color: #1e293b; margin-bottom: 35px; 
+      display: flex; align-items: center; gap: 12px; text-align: center; justify-content: center;
+      padding: 15px 0; border-bottom: 2px solid #e2e8f0;
     }
     .control-group { 
-      margin-bottom: 30px;
-      animation: fadeInUp 0.6s ease-out;
+      margin-bottom: 35px; animation: fadeInUp 0.6s ease-out;
+      background: white; padding: 25px; border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
     }
-    .control-group:last-child {
-      margin-bottom: 0;
+    .control-group:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
     }
+    .control-group:last-child { margin-bottom: 0;}
     label { 
-      display: block;
-      font-weight: 600; 
-      color: #374151; 
-      font-size: 0.95em; 
-      margin-bottom: 12px;
+      display: block; font-weight: 700; color: #374151; font-size: 1.1em; 
+      margin-bottom: 15px; position: relative; display: flex; align-items: center; gap: 8px;
+    }
+    
+    /* 優化的選擇框樣式 */
+    .select-wrapper {
       position: relative;
+      width: 100%;
     }
     select { 
-      width: 100%;
-      padding: 16px 20px; 
-      border: 2px solid #e5e7eb; 
-      border-radius: 12px; 
-      font-size: 16px; 
-      background: white;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      appearance: none;
-      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>');
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      background-size: 16px;
-      cursor: pointer;
+      width: 100%; padding: 18px 50px 18px 20px; border: 2px solid #e5e7eb; 
+      border-radius: 14px; font-size: 16px; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); appearance: none;
+      cursor: pointer; font-weight: 500; color: #374151;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     select:focus { 
-      border-color: #667eea; 
-      outline: none; 
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      border-color: #667eea; outline: none; 
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 4px 15px rgba(102, 126, 234, 0.15); 
       transform: translateY(-1px);
+      background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
     }
-    .file-input-wrapper { 
-      position: relative; 
-      width: 100%;
+    select:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .file-input-wrapper input[type=file] { 
-      position: absolute; 
-      opacity: 0;
+    
+    /* 自定義下拉箭頭 */
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid #667eea;
       pointer-events: none;
+      transition: all 0.3s ease;
     }
+    .select-wrapper:hover::after {
+      border-top-color: #5a67d8;
+    }
+    
+    /* 選項樣式優化 */
+    select option {
+      padding: 12px 16px;
+      background: white;
+      color: #374151;
+      font-weight: 500;
+    }
+    select option:hover {
+      background: #f0f8ff;
+    }
+    
+    .file-input-wrapper { position: relative; width: 100%;}
+    .file-input-wrapper input[type=file] { position: absolute; opacity: 0; pointer-events: none;}
     .file-input-label { 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 100%;
-      padding: 16px 20px; 
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white; 
-      border-radius: 12px; 
-      cursor: pointer; 
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-weight: 600; 
-      font-size: 16px;
-      border: none;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      display: flex; align-items: center; justify-content: center; gap: 12px; 
+      width: 100%; padding: 18px 20px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+      color: white; border-radius: 14px; cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 600; font-size: 16px; border: none; 
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
     .file-input-label:hover { 
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
     }
-    .file-input-label:active {
-      transform: translateY(0);
-    }
+    .file-input-label:active { transform: translateY(-1px);}
+    
     .export-btn { 
-      width: 100%;
-      padding: 18px 20px; 
+      width: 100%; padding: 20px 20px; 
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      color: white; 
-      border: none; 
-      border-radius: 12px; 
-      cursor: pointer; 
-      font-weight: 700; 
-      font-size: 18px; 
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      color: white; border: none; border-radius: 14px; cursor: pointer; 
+      font-weight: 700; font-size: 18px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
     }
     .export-btn:hover:not(:disabled) { 
-      transform: translateY(-2px); 
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     }
     .export-btn:disabled { 
-      opacity: 0.5; 
-      cursor: not-allowed; 
-      transform: none;
-      box-shadow: none;
+      opacity: 0.5; cursor: not-allowed; transform: none; 
+      box-shadow: none; background: #9ca3af;
     }
+    
     .canvas-area { 
-      padding: 40px; 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: white;
-      position: relative;
+      padding: 40px; display: flex; flex-direction: column; align-items: center; 
+      background: white; position: relative;
     }
-    .canvas-header {
-      width: 100%;
-      margin-bottom: 30px;
-    }
-    .canvas-title {
-      font-size: 1.4em;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 10px;
-    }
-    .canvas-subtitle {
-      color: #64748b;
-      font-size: 1em;
-    }
+    .canvas-header { width: 100%; margin-bottom: 30px;}
+    .canvas-title { font-size: 1.4em; font-weight: 700; color: #1e293b; margin-bottom: 10px;}
+    .canvas-subtitle { color: #64748b; font-size: 1em;}
     canvas { 
-      border: 3px solid #e5e7eb; 
-      border-radius: 16px; 
-      background: #f8fafc; 
+      border: 3px solid #e5e7eb; border-radius: 16px; background: #f8fafc; 
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      cursor: grab; 
-      transition: all 0.3s ease;
-      max-width: 100%;
-      height: auto;
+      cursor: grab; transition: all 0.3s ease; max-width: 100%; height: auto;
     }
-    canvas:active { 
-      cursor: grabbing; 
-    }
-    canvas:hover {
-      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    }
+    canvas:active { cursor: grabbing;}
+    canvas:hover { box-shadow: 0 25px 50px rgba(0,0,0,0.15);}
+    
     .hint { 
-      margin-top: 25px;
-      padding: 20px 25px;
+      margin-top: 25px; padding: 20px 25px; 
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-      border-radius: 12px;
-      border-left: 4px solid #3b82f6;
-      color: #1e40af;
-      font-size: 15px;
-      max-width: 600px;
+      border-radius: 12px; border-left: 4px solid #3b82f6; color: #1e40af; 
+      font-size: 15px; max-width: 600px;
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
     }
-    .hint strong { 
-      color: #1e3a8a; 
-      font-weight: 700;
-    }
+    .hint strong { color: #1e3a8a; font-weight: 700;}
+    
     .status { 
-      margin-top: 20px;
-      padding: 16px 20px; 
-      border-radius: 12px; 
-      font-size: 15px; 
-      display: none;
-      font-weight: 500;
+      margin-top: 20px; padding: 16px 20px; border-radius: 12px; 
+      font-size: 15px; display: none; font-weight: 500;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     .status.success { 
-      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-      color: #065f46; 
-      border: 1px solid #6ee7b7;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); 
+      color: #065f46; border: 1px solid #6ee7b7;
     }
     .status.error { 
-      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-      color: #7f1d1d; 
-      border: 1px solid #f87171;
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); 
+      color: #7f1d1d; border: 1px solid #f87171;
     }
-    .size-display {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 12px 18px;
-      border-radius: 12px;
+    
+    .size-display { 
+      position: absolute; top: 20px; right: 20px; 
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+      padding: 12px 18px; border-radius: 12px; font-weight: 600; color: #1e293b; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* 尺寸對照表美化 */
+    .size-table-section {
+      margin-top: 25px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 1px solid #f1f5f9;
+    }
+    
+    .size-table-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 18px 20px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    
+    #sizes-table {
+      width: 100%;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    
+    #sizes-table thead th {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      color: #64748b;
+      font-size: 14px;
       font-weight: 600;
-      color: #1e293b;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 15px 16px;
+      border-bottom: 2px solid #e2e8f0;
     }
+    
+    #sizes-table tbody tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    #sizes-table tbody tr:hover {
+      background: linear-gradient(135deg, #f0f8ff 0%, #e0f2fe 100%);
+    }
+    
+    #sizes-table tbody td {
+      padding: 12px 16px;
+      color: #374151;
+      font-weight: 500;
+    }
+    
+    #sizes-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    /* 圖標樣式 */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     @media (max-width: 1200px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      .controls-sidebar {
-        border-right: none;
-        border-bottom: 1px solid #e2e8f0;
-      }
-      .control-group {
-        margin-bottom: 25px;
-      }
+      .main-content { grid-template-columns: 1fr; } 
+      .controls-sidebar { border-right: none; border-bottom: 1px solid #e2e8f0; } 
+      .control-group { margin-bottom: 25px; } 
     }
-    @media (max-width: 768px) {
-      body { 
-        padding: 10px; 
-      }
-      .header {
-        padding: 30px 20px;
-      }
-      .header h1 { 
-        font-size: 2.2em; 
-      }
-      .header p {
-        font-size: 1.1em;
-      }
-      .controls-sidebar, .canvas-area { 
-        padding: 25px 20px; 
-      }
-      .controls-title,
-      .canvas-title {
-        font-size: 1.2em;
-      }
-      .file-input-label, .export-btn { 
-        font-size: 16px; 
-        padding: 14px 18px; 
-      }
-      .hint {
-        margin-top: 20px;
-        padding: 16px 20px;
-      }
+    @media (max-width: 768px) { 
+      body { padding: 10px; } 
+      .header { padding: 30px 20px; } 
+      .header h1 { font-size: 2.2em; } 
+      .header p { font-size: 1.1em; } 
+      .controls-sidebar, .canvas-area { padding: 25px 20px; } 
+      .controls-title, .canvas-title { font-size: 1.2em; } 
+      .file-input-label, .export-btn { font-size: 16px; padding: 14px 18px; } 
+      .hint { margin-top: 20px; padding: 16px 20px; } 
+      .main-content { grid-template-columns: 1fr; }
     }
-    /* 動畫效果 */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    
+    @keyframes fadeInUp { 
+      from { opacity: 0; transform: translateY(20px);} 
+      to { opacity: 1; transform: translateY(0);} 
     }
     .control-group:nth-child(1) { animation-delay: 0.1s; }
     .control-group:nth-child(2) { animation-delay: 0.2s; }
     .control-group:nth-child(3) { animation-delay: 0.3s; }
     .control-group:nth-child(4) { animation-delay: 0.4s; }
-    /* 載入動畫 */
-    .loading {
-      position: relative;
-      overflow: hidden;
-    }
-    .loading::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    .control-group:nth-child(5) { animation-delay: 0.5s; }
+    
+    .loading { position: relative; overflow: hidden;}
+    .loading::after { 
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; 
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); 
       animation: loading 1.5s infinite;
     }
-    @keyframes loading {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
+    @keyframes loading { 0% { left: -100%; } 100% { left: 100%; } }
   </style>
 </head>
 <body>
@@ -345,16 +299,27 @@
     <div class="main-content">
       <aside class="controls-sidebar">
         <h2 class="controls-title">
-          ⚙️ 設計控制台
+          <span class="icon">⚙️</span>
+          設計控制台
         </h2>
+        
         <div class="control-group">
-          <label for="tshirt-color">T-Shirt 款式</label>
-          <select id="tshirt-color">
-            <option value="">請選擇T-Shirt...</option>
-          </select>
+          <label for="tshirt-color">
+            <span class="icon">👕</span>
+            T-Shirt 款式選擇
+          </label>
+          <div class="select-wrapper">
+            <select id="tshirt-color">
+              <option value="">請選擇T-Shirt款式...</option>
+            </select>
+          </div>
         </div>
+        
         <div class="control-group">
-          <label>上傳設計圖</label>
+          <label>
+            <span class="icon">🎨</span>
+            上傳設計圖片
+          </label>
           <div class="file-input-wrapper">
             <input type="file" id="upload-art" accept="image/*" />
             <label for="upload-art" class="file-input-label">
@@ -365,7 +330,12 @@
             </label>
           </div>
         </div>
+        
         <div class="control-group">
+          <label>
+            <span class="icon">📸</span>
+            匯出校稿圖片
+          </label>
           <button id="export-jpg" class="export-btn" disabled>
             <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
               <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
@@ -373,8 +343,28 @@
             匯出 JPG 校稿圖
           </button>
         </div>
+        
         <div id="status" class="status"></div>
+
+        <!-- 優化的尺寸對照表 -->
+        <div class="size-table-section">
+          <div class="size-table-header">
+            📏 各尺寸設計圖參考表
+          </div>
+          <table id="sizes-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">尺寸</th>
+                <th style="text-align:right;">設計圖尺寸</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- JS 產生 -->
+            </tbody>
+          </table>
+        </div>
       </aside>
+      
       <main class="canvas-area">
         <div class="canvas-header">
           <h2 class="canvas-title">預覽畫布</h2>
@@ -393,7 +383,7 @@
     const statusDiv = document.getElementById('status');
     const exportBtn = document.getElementById('export-jpg');
 
-    // 尺寸計算
+    // 設計圖像素轉公分係數
     const pxToCm = 0.06;
     function roundCM(val) { return Math.round(val); }
 
@@ -416,13 +406,64 @@
       return { w: wcm, h: hcm };
     }
 
-    // 你的T-shirt圖檔清單，檔名需與tshirts資料夾內一致
+    // T-shirt圖檔清單
     const tshirtFiles = [
       '白色.png', '黑色.png', '石墨灰.png', '深卡其.png', '沙棕色.png',
       '薄荷綠.png', '淺粉紅.png', '經典藍.png', '燕麥色.png', '靛青色.png',
       '酒紅色.png', '深咖啡.png', '深藍色.png', '淺卡其.png', '麻灰色.png',
       '煙燻粉.png', '墨綠色.png', '濃可可.png', '黑巧克力.png', '鼠尾草綠.png'
     ];
+
+    // 尺寸資料（只會固定）
+    const tshirtSizeData = [
+      { size: '90', width: 31 },
+      { size: '110', width: 34 },
+      { size: '130', width: 37 },
+      { size: '150', width: 41 },
+      { size: '160', width: 44 },
+      { size: 'GS', width: 43 },
+      { size: 'GM', width: 46 },
+      { size: 'GL', width: 49 },
+      { size: 'S', width: 47 },
+      { size: 'M', width: 50 },
+      { size: 'L', width: 53 },
+      { size: 'XL', width: 56 },
+      { size: '2L', width: 59 },
+      { size: '3L', width: 62 }
+    ];
+
+    // 動態更新尺寸對照表
+    function updateSizeCompareTable() {
+      const tableBody = document.querySelector('#sizes-table tbody');
+      tableBody.innerHTML = '';
+      if (!artLoaded) return;
+      // M號衣寬為基準
+      const baseWidth = 50;
+      // 設計圖目前在M號時的顯示公分數
+      const cmW = artState.originalWidth * artState.scale * pxToCm * 1.1;
+      const cmH = artState.originalHeight * artState.scale * pxToCm * 1.1;
+      tshirtSizeData.forEach(item => {
+        const scale = item.width / baseWidth;
+        const w = Math.round(cmW * scale);
+        const h = Math.round(cmH * scale);
+        const highlight = (item.size === 'M') ? "font-weight:bold; color:#e11d48;" : "";
+        tableBody.innerHTML += `
+          <tr>
+            <td style="${highlight}">${item.size}</td>
+            <td style="text-align:right;${highlight}">${w} × ${h} cm</td>
+          </tr>
+        `;
+      });
+    }
+
+    // 讓表格在所有相關動作都會自動刷新
+    ['drawCanvas', 'updateExportButton'].forEach(fn => {
+      const old = window[fn];
+      window[fn] = function() {
+        if (old) old.apply(this, arguments);
+        updateSizeCompareTable();
+      };
+    });
 
     const tshirtImg = new Image();
     const artImg = new Image();
@@ -436,11 +477,10 @@
       setTimeout(() => { statusDiv.style.display = 'none'; }, 4000);
     }
 
-    // 只顯示有在陣列裡的T-shirt圖檔，不再檢查檔案是否存在
+    // 載入T-shirt款式選單
     async function loadTshirtOptions() {
       const select = document.getElementById('tshirt-color');
-      select.innerHTML = '';
-      // 直接把所有圖檔檔名加入選單
+      select.innerHTML = '<option value="">請選擇T-Shirt款式...</option>';
       tshirtFiles.forEach(filename => {
         const imgPath = `./tshirts/${filename}`;
         const option = document.createElement('option');
@@ -449,8 +489,8 @@
         select.appendChild(option);
       });
       // 預設選第一個並載入
-      if (select.options.length > 0) {
-        select.value = select.options[0].value;
+      if (select.options.length > 1) {
+        select.value = select.options[1].value;
         loadTshirtImage(select.value);
       }
     }
@@ -461,8 +501,8 @@
         drawCanvas();
         updateExportButton();
       };
-      tshirtImg.onerror = function() { 
-        showStatus('T-shirt圖片載入失敗', 'error'); 
+      tshirtImg.onerror = function() {
+        showStatus('T-shirt圖片載入失敗', 'error');
       };
       tshirtImg.src = src;
     }
@@ -484,7 +524,6 @@
           showStatus('圖片檔案過大，請選擇小於10MB的檔案', 'error');
           return;
         }
-
         const reader = new FileReader();
         reader.onload = function(event) {
           artImg.onload = function() {
@@ -510,20 +549,20 @@
               ${file.name}
             `;
           };
-          artImg.onerror = function() { 
-            showStatus('圖片載入失敗，請嘗試其他檔案', 'error'); 
+          artImg.onerror = function() {
+            showStatus('圖片載入失敗，請嘗試其他檔案', 'error');
           };
           artImg.src = event.target.result;
         };
-        reader.onerror = function() { 
-          showStatus('檔案讀取失敗', 'error'); 
+        reader.onerror = function() {
+          showStatus('檔案讀取失敗', 'error');
         };
         reader.readAsDataURL(file);
       }
     });
 
-    function updateExportButton() { 
-      exportBtn.disabled = !tshirtLoaded; 
+    function updateExportButton() {
+      exportBtn.disabled = !tshirtLoaded;
     }
 
     function drawCanvas() {
@@ -563,94 +602,8 @@
 
     // 拖曳功能
     let isDragging = false;
-
     canvas.addEventListener('mousedown', (e) => {
       if (!artLoaded) return;
       const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      const displayWidth = artState.originalWidth * artState.scale;
-      const displayHeight = artState.originalHeight * artState.scale;
-
-      if (
-        mouseX >= artState.x - displayWidth / 2 &&
-        mouseX <= artState.x + displayWidth / 2 &&
-        mouseY >= artState.y - displayHeight / 2 &&
-        mouseY <= artState.y + displayHeight / 2
-      ) {
-        isDragging = true;
-        artState.offsetX = mouseX - artState.x;
-        artState.offsetY = mouseY - artState.y;
-        canvas.style.cursor = 'grabbing';
-      }
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      artState.x = mouseX - artState.offsetX;
-      artState.y = mouseY - artState.offsetY;
-      drawCanvas();
-    });
-
-    canvas.addEventListener('mouseup', () => {
-      isDragging = false;
-      canvas.style.cursor = 'grab';
-    });
-
-    canvas.addEventListener('mouseleave', () => {
-      isDragging = false;
-      canvas.style.cursor = 'grab';
-    });
-
-    // 滾輪縮放
-    canvas.addEventListener('wheel', (e) => {
-      if (!artLoaded) return;
-      e.preventDefault();
-      let { w, h } = getCurrentCmSize();
-      let delta = e.deltaY < 0 ? 1 : -1;
-      let newW = roundCM(w) + delta;
-      let newH = roundCM(h) + delta;
-      if (newW < 5) newW = 5;
-      if (newH < 5) newH = 5;
-
-      let targetScaleW = newW / (artState.originalWidth * pxToCm);
-      let targetScaleH = newH / (artState.originalHeight * pxToCm);
-      let targetScale = Math.min(targetScaleW, targetScaleH);
-      let minScale = Math.max(5 / (artState.originalWidth * pxToCm), 5 / (artState.originalHeight * pxToCm));
-      if (targetScale < minScale) targetScale = minScale;
-
-      artState.scale = targetScale;
-      drawCanvas();
-    });
-
-    document.getElementById('export-jpg').addEventListener('click', () => {
-      if (!tshirtLoaded) {
-        showStatus('請先選擇T-shirt款式', 'error');
-        return;
-      }
-
-      try {
-        drawCanvas();
-        const link = document.createElement('a');
-        link.download = `tshirt_preview_${new Date().getTime()}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        showStatus('校稿圖已成功匯出！');
-      } catch (error) {
-        showStatus('匯出失敗，請重試', 'error');
-      }
-    });
-
-    // 初始化載入
-    window.addEventListener('load', () => {
-      loadTshirtOptions();
-      drawCanvas();
-    });
-  </script>
-</body>
-</html>
