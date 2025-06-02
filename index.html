@@ -607,5 +607,84 @@
       const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      const displayWidth = artState.originalWidth * artState.scale;
+      const displayHeight = artState.originalHeight * artState.scale;
+
+      if (
+        mouseX >= artState.x - displayWidth / 2 &&
+        mouseX <= artState.x + displayWidth / 2 &&
+        mouseY >= artState.y - displayHeight / 2 &&
+        mouseY <= artState.y + displayHeight / 2
+      ) {
+        isDragging = true;
+        artState.offsetX = mouseX - artState.x;
+        artState.offsetY = mouseY - artState.y;
+        canvas.style.cursor = 'grabbing';
+      }
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      artState.x = mouseX - artState.offsetX;
+      artState.y = mouseY - artState.offsetY;
+      drawCanvas();
+    });
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+      canvas.style.cursor = 'grab';
+    });
+    canvas.addEventListener('mouseleave', () => {
+      isDragging = false;
+      canvas.style.cursor = 'grab';
+    });
+
+    // 滾輪縮放
+    canvas.addEventListener('wheel', (e) => {
+      if (!artLoaded) return;
+      e.preventDefault();
+      let { w, h } = getCurrentCmSize();
+      let delta = e.deltaY < 0 ? 1 : -1;
+      let newW = roundCM(w) + delta;
+      let newH = roundCM(h) + delta;
+      if (newW < 5) newW = 5;
+      if (newH < 5) newH = 5;
+
+      let targetScaleW = newW / (artState.originalWidth * pxToCm);
+      let targetScaleH = newH / (artState.originalHeight * pxToCm);
+      let targetScale = Math.min(targetScaleW, targetScaleH);
+      let minScale = Math.max(5 / (artState.originalWidth * pxToCm), 5 / (artState.originalHeight * pxToCm));
+      if (targetScale < minScale) targetScale = minScale;
+
+      artState.scale = targetScale;
+      drawCanvas();
+    });
+
+    document.getElementById('export-jpg').addEventListener('click', () => {
+      if (!tshirtLoaded) {
+        showStatus('請先選擇T-shirt款式', 'error');
+        return;
+      }
+      try {
+        drawCanvas();
+        const link = document.createElement('a');
+        link.download = `tshirt_preview_${new Date().getTime()}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showStatus('校稿圖已成功匯出！');
+      } catch (error) {
+        showStatus('匯出失敗，請重試', 'error');
+      }
+    });
+
+    // 初始化載入
+    window.addEventListener('load', () => {
       loadTshirtOptions();
-</script>
+      drawCanvas();
+    });
+  </script>
+</body>
+</html>
