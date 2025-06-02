@@ -315,11 +315,34 @@
           <span class="icon">⚙️</span>
           設計控制台
         </h2>
-        
+          <!-- 尺寸選擇器加在這裡！ -->
+  <div style="margin-bottom: 24px;">
+  <span style="font-weight:bold;font-size:1.18rem;display:flex;align-items:center;margin-bottom:10px;">
+    <img src="https://raw.githubusercontent.com/HOSETEE/tshirt-designer/refs/heads/main/tshirts/size-icon.svg" width="26" style="margin-right:10px;vertical-align:middle;">T-Shirt Size
+  </span>
+  <div style="background:#fff;border-radius:20px;padding:18px 20px 10px 20px;box-shadow:0 4px 24px rgba(20,22,70,0.07);margin-top:0;">
+    <select id="size-selector" style="width:100%;border:0;font-size:1.24rem;padding:18px 12px 16px 12px;border-radius:16px;background:#f5f7fa;font-weight:bold;color:#334155;outline:none;appearance:none;-webkit-appearance:none;box-shadow:0 2px 8px rgba(100,116,139,0.04);">
+      <option value="90">90</option>
+      <option value="110">110</option>
+      <option value="130">130</option>
+      <option value="150">150</option>
+      <option value="160">160</option>
+      <option value="GS">GS</option>
+      <option value="GM">GM</option>
+      <option value="GL">GL</option>
+      <option value="S">S</option>
+      <option value="M" selected>M</option>
+      <option value="L">L</option>
+      <option value="XL">XL</option>
+      <option value="2L">2L</option>
+      <option value="3L">3L</option>
+    </select>
+  </div>
+</div>
         <div class="control-group">
           <label for="tshirt-color">
             <span class="icon">👕</span>
-            T-Shirt 款式選擇
+            T-Shirt 顏色選擇
           </label>
           <div class="select-wrapper">
             <select id="tshirt-color">
@@ -395,7 +418,6 @@
     const ctx = canvas.getContext('2d');
     const statusDiv = document.getElementById('status');
     const exportBtn = document.getElementById('export-jpg');
-
     // 設計圖像素轉公分係數
     const pxToCm = 0.06;
     function roundCM(val) { return Math.round(val); }
@@ -579,6 +601,11 @@
     }
 
     function drawCanvas() {
+      document.getElementById('size-selector').addEventListener('change', function(e) {
+        selectedSize = e.target.value;
+        drawCanvas();
+    });
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (tshirtLoaded) {
@@ -597,10 +624,12 @@
           displayWidth,
           displayHeight
         );
-        // 尺寸標示
-        const w = roundCM(artState.originalWidth * artState.scale * pxToCm * 1.1);
-        const h = roundCM(artState.originalHeight * artState.scale * pxToCm * 1.1);
-        const label = `${w} cm × ${h} cm`;
+        // 根據所選尺寸算比例
+const sizeObj = tshirtSizeData.find(item => item.size === selectedSize);
+const scale = sizeObj ? sizeObj.width / 50 : 1;
+const w = roundCM(artState.originalWidth * artState.scale * pxToCm * 1.1 * scale);
+const h = roundCM(artState.originalHeight * artState.scale * pxToCm * 1.1 * scale);
+const label = `${w} cm × ${h} cm | ${selectedSize}`;
         ctx.save();
         ctx.font = "bold 28px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillStyle = "#c9a063";
@@ -652,7 +681,7 @@
       isDragging = false;
       canvas.style.cursor = 'grab';
     });
-
+    
     // 滾輪縮放
     canvas.addEventListener('wheel', (e) => {
       if (!artLoaded) return;
