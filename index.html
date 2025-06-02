@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HOSETEE｜T-Shirt合圖工具</title>
+  <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
@@ -291,6 +293,17 @@
   </style>
 </head>
 <body>
+    <!-- 圖片裁切 Modal -->
+<div id="cropperModal" style="display:none; position:fixed; z-index:9999; left:0;top:0;width:100vw;height:100vh; background:rgba(40,41,61,0.75);align-items:center;justify-content:center;">
+  <div style="background:white;padding:32px 30px 24px 30px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.22);display:inline-block;position:relative;">
+    <img id="cropperImage" style="max-width:480px;max-height:60vh;display:block;margin:auto;">
+    <div style="display:flex;gap:16px;justify-content:center;margin-top:22px;">
+      <button id="cropperConfirm" style="padding:10px 28px;border:none;background:#22c55e;color:white;font-size:18px;font-weight:bold;border-radius:8px;cursor:pointer;">確定</button>
+      <button id="cropperCancel" style="padding:10px 28px;border:none;background:#64748b;color:white;font-size:18px;font-weight:bold;border-radius:8px;cursor:pointer;">取消</button>
+    </div>
+  </div>
+</div>
+
   <div class="container">
     <div class="header">
       <h1>HOSETEE 客製化設計工具</h1>
@@ -685,6 +698,58 @@
       loadTshirtOptions();
       drawCanvas();
     });
+    let cropper; // 全域變數存裁切實例
+
+// 1. 監聽 input change，上傳圖片時觸發裁切
+document.getElementById('upload-art').addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+
+  // 開啟 Modal 裡的圖片，進入裁切模式
+  document.getElementById('cropperImage').src = url;
+  document.getElementById('cropperModal').style.display = 'flex';
+
+  // 銷毀舊裁切實例
+  if (cropper) cropper.destroy();
+  // 初始化裁切
+  cropper = new Cropper(document.getElementById('cropperImage'), {
+    aspectRatio: NaN, // 不限制比例，可自由拉
+    viewMode: 1,
+    autoCropArea: 0.9,
+    movable: true,
+    zoomable: true,
+    rotatable: false,
+    scalable: false,
+    responsive: true,
+    minContainerWidth: 400,
+    minContainerHeight: 300
+  });
+});
+
+// 2. 裁切完成按下「確定」：取得結果 Blob 丟給主流程
+document.getElementById('cropperConfirm').onclick = function() {
+  if (!cropper) return;
+  cropper.getCroppedCanvas().toBlob(function(blob) {
+    // 關閉 Modal
+    document.getElementById('cropperModal').style.display = 'none';
+
+    // 用 FileReader 讀成 dataURL，再載入進主設計工具
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      // 這邊假設 artImg 為主流程裡顯示圖片的 Image 實例
+      artImg.src = e.target.result;
+      // 設計圖原尺寸等屬性在 artImg onload 時就會自動套用
+    };
+    reader.readAsDataURL(blob);
+  }, 'image/png');
+};
+
+// 3. 取消按鈕：關閉 Modal
+document.getElementById('cropperCancel').onclick = function() {
+  document.getElementById('cropperModal').style.display = 'none';
+  if (cropper) cropper.destroy();
+};
   </script>
 </body>
 </html>
