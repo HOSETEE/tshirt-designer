@@ -480,17 +480,16 @@
       const cmW = artState.originalWidth * artState.scale * pxToCm * 1.1;
       const cmH = artState.originalHeight * artState.scale * pxToCm * 1.1;
       tshirtSizeData.forEach(item => {
-        const scale = item.width / baseWidth;
-        const w = Math.round(cmW * scale);
-        const h = Math.round(cmH * scale);
-        const highlight = (item.size === 'M') ? "font-weight:bold; color:#e11d48;" : "";
-        tableBody.innerHTML += `
-          <tr>
-            <td style="${highlight}">${item.size}</td>
-            <td style="text-align:right;${highlight}">${w} × ${h} cm</td>
-          </tr>
-        `;
-      });
+  const scale = item.width / baseWidth;
+  const w = Math.round(cmW * scale);
+  const h = Math.round(cmH * scale);
+  tableBody.innerHTML += `
+    <tr>
+      <td>${item.size}</td>
+      <td style="text-align:right;">${w} × ${h} cm</td>
+    </tr>
+  `;
+});
     }
 
     // 讓表格在所有相關動作都會自動刷新
